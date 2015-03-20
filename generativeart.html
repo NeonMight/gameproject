@@ -1,0 +1,76 @@
+<html>
+<head>
+<title>HTML Canvas Expirement</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<style>
+canvas {
+    border-radius: 25px;
+}
+</style>
+<script>
+function create_canvas()
+{
+  //Get our context
+  var canvas = document.getElementById("mainc");
+  var ctx = canvas.getContext("2d");
+  backg(ctx);
+  write_text(ctx);
+  var interval = setInterval(function(){generate_graphicsx(ctx);},200); //MUST use an anonymous function call
+
+}
+
+function write_text(ctx)
+{
+  ctx.font = "12px serif";
+  ctx.textBaseline = 'hanging';
+  ctx.textAlign = 'right';
+  ctx.strokeText("Created by Stephen Hoffman",980,680);
+}
+
+function backg(ctx)
+{
+  var img = new Image();
+  img.onload = function(){ctx.drawImage(img,0,0);write_text(ctx);}
+  img.src = "http://wallpoper.com/images/00/26/06/21/gaussian-blur_00260621.jpg";
+}
+
+function generate_graphicsx(ctx)
+{
+    var coordsx = Math.floor(Math.random() * (980-1)+1);
+    var coordsy = Math.floor(Math.random() * (680-1)+1);
+    //a_context.fillRect(50, 25, 150, 100);
+    ctx.beginPath();
+    ctx.arc(coordsx, coordsy, 60, 0, 2*Math.PI);
+    ctx.stroke();
+    //console.log('x: '+coordsx);
+    //console.log('y: '+coordsy);
+}
+
+function refresh_canvas(ctx)
+{
+  var canvas = document.getElementById('mainc');
+  canvas.width = canvas.width;
+  backg(ctx);
+  //write_text(ctx);
+}
+</script>
+</head>
+<body onload='create_canvas();'>
+<nav class='navbar navbar-default navbar-fixed-top'>
+<div class='container'>
+<div class='navbar-header'>
+<a class='navbar-brand'>HTML5 Generative Art</a>
+</div>
+</div>
+</nav>
+<div class='container'>
+<div class='jumbotron'>
+<div align='center'>
+<br>
+<canvas id='mainc' width='1000' height='700'>You need to update your browser, bro</canvas>
+<br><button class='btn btn-primary' onclick='refresh_canvas(document.getElementById("mainc").getContext("2d"));'>Refresh Canvas</button>
+</div>
+</div>
+</div>
+</body>
+</html>
