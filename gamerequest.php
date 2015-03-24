@@ -10,4 +10,15 @@ if ($action = 'checkAvailUsers')
   $count = mysql_num_rows($results);
   echo $count;
 }
+
+if ($action = 'getScore')
+{
+  $username = $_POST['text'];
+  $sql = 'select score from accounts where username= "'.$username.'";';
+  $results = mysql_query($sql)or die('Error fetching score'.mysql_error());
+  while($row = mysql_fetch_assoc($results))
+  {
+    echo $row['score'];
+  }
+}
 ?>

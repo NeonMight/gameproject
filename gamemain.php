@@ -5,6 +5,8 @@ if (empty($_SESSION['username']))
   header('location:gameportal.php');
 }
 include 'gameconnect.php';
+$con = connect_to_db();
+$username = $_SESSION['username'];
 ?>
 <html>
 <head>
@@ -19,12 +21,14 @@ canvas {border: 2px solid black;}
 <!--external javascript-->
 <script src='game.js'></script>
 </head>
-<body onload='initialize_game()'>
+<body>
+<?php echo "<img src='https://canvas.instructure.com/favicon.ico' onload='initialize_game(\"$username\")'>"; // initialize the game for this user?>
 <div class='container'>
-<h2>You done did it!!</h2>
+<h2>HTML5 War Game</h2>
 <canvas id='field' width='1000' height='1000'>You need to update your browser, bro</canvas><br>
-<div id='cardbank' name='cardbank'></div>
+<p id='score' name='score'></p>
 <a href='gamelogout.php'>Logout</a>
 </div>
+<?php mysql_close($con); ?>
 </body>
 </html>

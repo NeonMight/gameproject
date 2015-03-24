@@ -100,11 +100,10 @@ function shuffle(array)
   return array;
 }
 
-function initialize_game()
+function initialize_game(usr)
 {
   var canv = document.getElementById('field');
   var ctx = canv.getContext('2d');
-  var cardbank = document.getElementById('cardbank');
   var deck = [];
   for (var i = 1; i<13; i++)
   {
@@ -114,41 +113,73 @@ function initialize_game()
     deck.push(i);
   }
   shuffle(deck);
-  //we will split the deck into equal halves later
+  //we will draw from one single deck for both players
+  /*
   var card1 = deck.pop();
   var card2 = deck.pop();
   var card3 = deck.pop();
   alert('Your 3 random cards are '+card1+' '+card2+' and '+card3);
   console.log('gratz');
-  // You will have to use images to make on click work
-
-  var c1 = new Image(150,200);
-  var c2 = new Image(150,200);
-  var c3 = new Image(150,200);
-  c1.src = 'http://static.giantbomb.com/uploads/original/2/27734/1074207-king.jpg';
-  c2.src = 'http://static.giantbomb.com/uploads/original/2/27734/1074207-king.jpg';
-  c3.src = 'http://static.giantbomb.com/uploads/original/2/27734/1074207-king.jpg';
-  //c1.src = 'img/card'+card1+'.jpg';
-  //c2.src = 'img/card'+card2+'.jpg';
-  //c3.src = 'img/card'+card3+'.jpg';
-  //var onc1 = 'playCard('+card1+')';
-  c1.setAttribute('onclick','playCard('+card1+', "field")');
-  c2.setAttribute('onclick','playCard('+card2+', "field")');
-  c3.setAttribute('onclick','playCard('+card3+', "field")');
-  //c2.setAttribute('onclick','playCard('+card2')');
-  //c3.setAttribute('onclick','playCard('+card3')');
-  cardbank.appendChild(c1);
-  cardbank.appendChild(c2);
-  cardbank.appendChild(c3);
+  */
+  for (var i = 0; i < 3; i++)
+  {
+    //draw cards
+  }
+  //request for users score here with xmlrequest
+  var request = getXMLHttpObject();
+  //pass username into this function with php
+  //get the username from the function call
+  var params = "action=getScore&text="+usr+"&sid="+Math.random();
+  request.open('post','gamerequest.php',true);
+  request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  request.send(params);
+  request.onreadystatechange = function() {
+    var score = document.getElementById('score');
+    var pizza = 'Your score is: <b>'+request.responseText+'</b>';
+    score.innerHTML = pizza;
+  }
+  console.log('Your username is '+usr);
 }
 
-function playCard(x,f)
+function renderCards()
 {
-  //alert('You played '+x+' to '+f+'!');
-  canvas = document.getElementById(f);
-  ctx = canvas.getContext("2d");
-  var newcard = new Image(10,20);
-  newcard.src = 'http://static.giantbomb.com/uploads/original/2/27734/1074207-king.jpg';
-  //newcard.src = 'img/card'+x+'.jpg';
-  newcard.onload = function(){ctx.drawImage(newcard,450,750,150,200);}
+  //
 }
+
+/*
+var elem = document.getElementById('myCanvas'),
+    elemLeft = elem.offsetLeft,
+    elemTop = elem.offsetTop,
+    context = elem.getContext('2d'),
+    elements = [];
+
+// Add event listener for `click` events.
+elem.addEventListener('click', function(event) {
+    var x = event.pageX - elemLeft,
+        y = event.pageY - elemTop;
+
+    // Collision detection between clicked offset and element.
+    elements.forEach(function(element) {
+        if (y > element.top && y < element.top + element.height
+            && x > element.left && x < element.left + element.width) {
+            alert('clicked an element');
+        }
+    });
+
+}, false);
+
+// Add element.
+elements.push({
+    colour: '#05EFFF',
+    width: 150,
+    height: 100,
+    top: 20,
+    left: 15
+});
+
+// Render elements.
+elements.forEach(function(element) {
+    context.fillStyle = element.colour;
+    context.fillRect(element.left, element.top, element.width, element.height);
+});​
+*/
