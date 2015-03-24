@@ -102,6 +102,9 @@ function shuffle(array)
 
 function initialize_game()
 {
+  var canv = document.getElementById('field');
+  var ctx = canv.getContext('2d');
+  var cardbank = document.getElementById('cardbank');
   var deck = [];
   for (var i = 1; i<13; i++)
   {
@@ -116,94 +119,36 @@ function initialize_game()
   var card2 = deck.pop();
   var card3 = deck.pop();
   alert('Your 3 random cards are '+card1+' '+card2+' and '+card3);
+  console.log('gratz');
+  // You will have to use images to make on click work
+
+  var c1 = new Image(150,200);
+  var c2 = new Image(150,200);
+  var c3 = new Image(150,200);
+  c1.src = 'http://static.giantbomb.com/uploads/original/2/27734/1074207-king.jpg';
+  c2.src = 'http://static.giantbomb.com/uploads/original/2/27734/1074207-king.jpg';
+  c3.src = 'http://static.giantbomb.com/uploads/original/2/27734/1074207-king.jpg';
+  //c1.src = 'img/card'+card1+'.jpg';
+  //c2.src = 'img/card'+card2+'.jpg';
+  //c3.src = 'img/card'+card3+'.jpg';
+  //var onc1 = 'playCard('+card1+')';
+  c1.setAttribute('onclick','playCard('+card1+', "field")');
+  c2.setAttribute('onclick','playCard('+card2+', "field")');
+  c3.setAttribute('onclick','playCard('+card3+', "field")');
+  //c2.setAttribute('onclick','playCard('+card2')');
+  //c3.setAttribute('onclick','playCard('+card3')');
+  cardbank.appendChild(c1);
+  cardbank.appendChild(c2);
+  cardbank.appendChild(c3);
 }
 
-//draw grid taken from class example
-function setup_canvas()
+function playCard(x,f)
 {
-  //Get our context
-  var a_canvas = document.getElementById("field");
-  var a_context = a_canvas.getContext("2d");
-
-  //Trace the horizontal and vertical lines
-  for (var x = 0.5; x < 700; x += 10) {
-    a_context.moveTo(x, 0);
-    a_context.lineTo(x, 700);
-  }
-
-  for (var y = 0.5; y < 700; y += 10) {
-    a_context.moveTo(0, y);
-    a_context.lineTo(700, y);
-  }
-
-  //Set the stroke style (in this case, only a color)
-  a_context.strokeStyle = "#eee";
-
-  //This line below actually draws everything
-  a_context.stroke();
-
-  //setup mousedown drawing on canvas
-  var mouse_click_x = 0;
-  var mouse_click_y = 0;
-  var mouse_is_down = false;
-  var line_array = new Array(10);
-  var lines = 0;
-
-
-  $("#field").mousemove(function(e){
-    var pageCoords = "( " + e.pageX + ", " + e.pageY + " )";
-    var clientCoords = "( " + e.clientX + ", " + e.clientY + " )";
-    $("span:first").text("( e.pageX, e.pageY ) : " + pageCoords);
-    $("span:last").text("( e.clientX, e.clientY ) : " + clientCoords);
-
-    if(mouse_is_down)
-    {
-      //Get our context
-      var a_canvas = document.getElementById("field");
-      var a_context = a_canvas.getContext("2d");
-
-      //Clear the context
-      //a_canvas.width = a_canvas.width;
-
-      //Set the stroke style
-      a_context.strokeStyle = "#000";
-
-      //Redraw all of our lines
-      for(i=0; i<lines; i++)
-      {
-        a_context.moveTo(line_array[i][0], line_array[i][1]);
-        a_context.lineTo(line_array[i][2], line_array[i][3]);
-        a_context.stroke();
-      }
-
-      //Draw the new line
-      a_context.moveTo(mouse_click_x, mouse_click_y);
-      a_context.lineTo(e.pageX, e.pageY);
-      a_context.stroke();
-    }
-  });
-
-  $("#field").mousedown(function(e){
-    //A new line has started
-    mouse_click_x = e.pageX;
-    mouse_click_y = e.pageY;
-    mouse_is_down = true;
-  });
-
-  $("#field").mouseup(function(e){
-    //Stop drawing the new line
-    mouse_is_down = false;
-
-    //Put this new line into our lines array
-    line_array[lines] = new Array(4);
-    line_array[lines][0] = mouse_click_x;
-    line_array[lines][1] = mouse_click_y;
-    line_array[lines][2] = e.pageX;
-    line_array[lines][3] = e.pageY;
-    lines++;
-  });
-
-  //now initialize the game environment
-
-  initialize_game();
+  //alert('You played '+x+' to '+f+'!');
+  canvas = document.getElementById(f);
+  ctx = canvas.getContext("2d");
+  var newcard = new Image(10,20);
+  newcard.src = 'http://static.giantbomb.com/uploads/original/2/27734/1074207-king.jpg';
+  //newcard.src = 'img/card'+x+'.jpg';
+  newcard.onload = function(){ctx.drawImage(newcard,450,750,150,200);}
 }
