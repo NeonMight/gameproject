@@ -121,9 +121,12 @@ function initialize_game(usr)
   alert('Your 3 random cards are '+card1+' '+card2+' and '+card3);
   console.log('gratz');
   */
+  var offset = 0;
   for (var i = 0; i < 3; i++)
   {
     //draw cards
+    renderCard(deck.pop(),100+offset,750,ctx);
+    offset += 150;
   }
   //request for users score here with xmlrequest
   var request = getXMLHttpObject();
@@ -141,9 +144,14 @@ function initialize_game(usr)
   console.log('Your username is '+usr);
 }
 
-function renderCards()
+function renderCard(c,x,y,ctx)
 {
   //
+  console.log('Rendering an '+c);
+  var card = new Image(150,200);
+  card.src = 'http://upload.wikimedia.org/wikipedia/commons/9/9b/Poker-sm-212-Ks.png'; //default image for now
+  card.onload = function(){ctx.drawImage(card,x,y,150,200);}
+  //img.onload = function(){ctx.drawImage(img,0,0);write_text(ctx);}
 }
 
 /*
