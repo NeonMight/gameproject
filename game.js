@@ -125,8 +125,8 @@ function initialize_game(usr)
   for (var i = 0; i < 3; i++)
   {
     //draw cards
-    renderCard(deck.pop(),100+offset,750,ctx);
-    offset += 150;
+    renderCard(deck.pop(),100+offset,750,ctx,canv);
+    offset += 175;
   }
   //request for users score here with xmlrequest
   var request = getXMLHttpObject();
@@ -144,50 +144,17 @@ function initialize_game(usr)
   console.log('Your username is '+usr);
 }
 
-function renderCard(c,x,y,ctx)
+function renderCard(c,x,y,ctx,can)
 {
   //
-  console.log('Rendering an '+c);
+  console.log('Rendering a '+c);
   var card = new Image(150,200);
   card.src = 'http://upload.wikimedia.org/wikipedia/commons/9/9b/Poker-sm-212-Ks.png'; //default image for now
   card.onload = function(){ctx.drawImage(card,x,y,150,200);}
   //img.onload = function(){ctx.drawImage(img,0,0);write_text(ctx);}
+  can.addEventListener('click', function(event) {
+    var xe = event.pageX - can.offsetLeft;
+    var ye = event.pageY - can.offsetTop;
+    if (xe >= x && xe <= x+150 && ye >= y && ye <= y+200) alert('clicked a card');
+  }, false);
 }
-
-/*
-var elem = document.getElementById('myCanvas'),
-    elemLeft = elem.offsetLeft,
-    elemTop = elem.offsetTop,
-    context = elem.getContext('2d'),
-    elements = [];
-
-// Add event listener for `click` events.
-elem.addEventListener('click', function(event) {
-    var x = event.pageX - elemLeft,
-        y = event.pageY - elemTop;
-
-    // Collision detection between clicked offset and element.
-    elements.forEach(function(element) {
-        if (y > element.top && y < element.top + element.height
-            && x > element.left && x < element.left + element.width) {
-            alert('clicked an element');
-        }
-    });
-
-}, false);
-
-// Add element.
-elements.push({
-    colour: '#05EFFF',
-    width: 150,
-    height: 100,
-    top: 20,
-    left: 15
-});
-
-// Render elements.
-elements.forEach(function(element) {
-    context.fillStyle = element.colour;
-    context.fillRect(element.left, element.top, element.width, element.height);
-});​
-*/
