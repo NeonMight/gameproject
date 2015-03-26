@@ -105,7 +105,7 @@ function initialize_game(usr)
   var canv = document.getElementById('field');
   var ctx = canv.getContext('2d');
   var deck = [];
-  for (var i = 1; i<13; i++)
+  for (var i = 2; i<10; i++)
   {
     deck.push(i);
     deck.push(i);
@@ -113,48 +113,15 @@ function initialize_game(usr)
     deck.push(i);
   }
   shuffle(deck);
-  //we will draw from one single deck for both players
-  /*
-  var card1 = deck.pop();
-  var card2 = deck.pop();
-  var card3 = deck.pop();
-  alert('Your 3 random cards are '+card1+' '+card2+' and '+card3);
-  console.log('gratz');
-  */
+  paper.setup(canv);
   var offset = 0;
   for (var i = 0; i < 3; i++)
   {
-    //draw cards
-    renderCard(deck.pop(),100+offset,750,ctx,canv);
-    offset += 175;
+    var raster = new paper.Raster();
+    raster.source = 'http://104.130.213.200/img/card'+deck.pop()+'.png';
+    raster.scale(.45);
+    raster.position.x = 333+offset;
+    raster.position.y = 750;
+    offset += 225;
   }
-  //request for users score here with xmlrequest
-  var request = getXMLHttpObject();
-  //pass username into this function with php
-  //get the username from the function call
-  var params = "action=getScore&text="+usr+"&sid="+Math.random();
-  request.open('post','gamerequest.php',true);
-  request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  request.send(params);
-  request.onreadystatechange = function() {
-    var score = document.getElementById('score');
-    var pizza = 'Your score is: <b>'+request.responseText+'</b>';
-    score.innerHTML = pizza;
-  }
-  console.log('Your username is '+usr);
-}
-
-function renderCard(c,x,y,ctx,can)
-{
-  //
-  console.log('Rendering a '+c);
-  var card = new Image(150,200);
-  card.src = 'http://upload.wikimedia.org/wikipedia/commons/9/9b/Poker-sm-212-Ks.png'; //default image for now
-  card.onload = function(){ctx.drawImage(card,x,y,150,200);}
-  //img.onload = function(){ctx.drawImage(img,0,0);write_text(ctx);}
-  can.addEventListener('click', function(event) {
-    var xe = event.pageX - can.offsetLeft;
-    var ye = event.pageY - can.offsetTop;
-    if (xe >= x && xe <= x+150 && ye >= y && ye <= y+200) alert('clicked a card');
-  }, false);
 }

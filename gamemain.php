@@ -18,6 +18,7 @@ canvas {border: 2px solid black;}
 </style>
 <!--jquery minified js-->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src='http://paperjs.org/assets/js/paper.js'></script>
 <!--external javascript-->
 <script src='game.js'></script>
 </head>
@@ -29,6 +30,7 @@ canvas {border: 2px solid black;}
 <p id='score' name='score'></p>
 <a href='gamelogout.php'>Logout</a>
 </div>
+<img class='hidden' id='card' src='http://upload.wikimedia.org/wikipedia/commons/9/9b/Poker-sm-212-Ks.png' height='200' width='150'>
 <?php mysql_close($con); ?>
 </body>
 </html>
