@@ -23,8 +23,8 @@ canvas {border: 2px solid black;}
 <script src='game.js'></script>
 </head>
 <body>
-<?php echo "<img src='https://canvas.instructure.com/favicon.ico' onload='initialize_game(\"$username\")'>"; // initialize the game for this user?>
 <div class='container'>
+<?php echo "<img src='http://a.rgbimg.com/cache1pG5f6/users/g/gr/groningen/300/mOaMyty.jpg' onload='initialize_game(\"$username\")'>"; ?>
 <h2>HTML5 War Game</h2>
 <canvas id='field' width='1000' height='1000'>You need to update your browser, bro</canvas><br>
 <p id='score' name='score'></p>

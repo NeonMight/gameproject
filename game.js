@@ -131,5 +131,5 @@ function renderCard(v,x,y)
     raster.scale(.45);
     raster.position.x = x;
     raster.position.y = y;
-    raster.onClick = function(event){alert('You clicked a card!');}
+    raster.onClick = function(event){alert('You played a '+v+'!');}
 }

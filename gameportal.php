@@ -27,10 +27,11 @@ if (!empty($_SESSION['account']))
 }
 ?>
 <div class='form-group'>
+<img src='http://a.rgbimg.com/cache1pG5f6/users/g/gr/groningen/300/mOaMyty.jpg'>
 <h3>Log In</h3>
 <form method='post' action='gameverify.php' onsubmit='return validateLogin();'>
 <div class='form-group'><input name='username' id='username' placeholder='Username' class='form-control'></div>
-<input name='password' id='password' placeholder='password' type='password' class='form-control'>
+<div class='form-group'><input name='password' id='password' placeholder='password' type='password' class='form-control'></div>
 <button type='submit' class='btn btn-default'>Log in</button>
 </form>
 </div>
@@ -38,8 +39,8 @@ if (!empty($_SESSION['account']))
 <h3>Sign Up</h3>
 <form method='post' action='gameregister.php' onsubmit='return validateRegister();'>
 <div id='userfield' class='form-group'><label for='user' class='control-label'>Enter your information</label><input name='user' id='user' placeholder='Username' onchange='userAvail();' class='form-control'></div>
-<input name='pass' id='pass' placeholder='Password' type='password' class='form-control'>
-<input name='pass2' id='pass2' placeholder='Repeat Password' type='password' class='form-control'>
+<div class='form-group'><input name='pass' id='pass' placeholder='Password' type='password' class='form-control'></div>
+<div class='form-group'><input name='pass2' id='pass2' placeholder='Repeat Password' type='password' class='form-control'></div>
 <button type='submit' class='btn btn-default'>Sign up</button>
 </form>
 </div>
