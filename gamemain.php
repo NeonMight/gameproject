@@ -19,8 +19,9 @@ canvas {border: 2px solid black;}
 <!--jquery minified js-->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src='http://paperjs.org/assets/js/paper.js'></script>
+<script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
 <!--external javascript-->
-<script src='game.js'></script>
+<script src='game.js' defer></script>
 </head>
 <body>
 <div class='container'>

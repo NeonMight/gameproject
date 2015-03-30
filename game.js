@@ -145,3 +145,12 @@ function playCard(v)
 {
   alert('You played a '+v+'!');
 }
+
+function setUp()
+{
+  var socket = io('https://localhost');
+  socket.on('connect',function()
+  {
+    socket.send('hi');
+  });
+}

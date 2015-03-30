@@ -1,7 +1,58 @@
-var ap = require('express');
-var http = require('http');
-http.createServer(function (req, res) {
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-  res.end('Hello World\n');
-}).listen(1337, '127.0.0.1');
-console.log('Server running at http://127.0.0.1:1337/');
+function shuffle(array)
+{
+  var currentIndex = array.length, temporaryValue, randomIndex ;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
+var io = require('socket.io')(80);
+var num_players = 0;
+//create global deck
+var cards_played = 0;
+var first_card = 0;
+var deck = [];
+for (var i = 2; i<10; i++)
+{
+  deck.push(i);
+  deck.push(i);
+  deck.push(i);
+  deck.push(i);
+}
+shuffle(deck);
+
+io.on('connection', function(socket)
+{
+  num_players++;
+  if(num_players < 2)
+  {
+    //pop off of deck and send back to player
+  }
+  else
+  {
+    console.log('There are 2 players already playing');
+  }
+  socket.on('message', function()
+  {
+    //receive data played by user here
+    cards_played++;
+    if(cards_played == 2)
+    {
+      //decide which one is larger here
+    }
+  });
+  socket.on('disconnect',function(){num_players--;});
+}
+);
