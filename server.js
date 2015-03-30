@@ -1,3 +1,4 @@
+//shuffle function taken from https://github.com/coolaj86/knuth-shuffle
 function shuffle(array)
 {
   var currentIndex = array.length, temporaryValue, randomIndex ;
@@ -48,6 +49,7 @@ io.on('connection', function(socket)
   }
   socket.on('message', function()
   {
+    console.log('A card has been played');
     //receive data played by user here
     cards_played++;
     if(cards_played == 2)

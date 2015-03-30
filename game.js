@@ -122,6 +122,7 @@ function initialize_game(usr)
     //renderCard(1,300+offset,250); this will display the card back
     offset += 200;
   }
+  setUp();
 }
 
 function renderCard(v,x,y,uoo)
@@ -148,9 +149,9 @@ function playCard(v)
 
 function setUp()
 {
-  var socket = io('https://localhost');
+  var socket = io('https://localhost:1337');
   socket.on('connect',function()
   {
-    socket.send('hi');
+    socket.send('message');
   });
 }
