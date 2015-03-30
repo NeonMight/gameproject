@@ -24,13 +24,13 @@ canvas {border: 2px solid black;}
 </head>
 <body>
 <div class='container'>
-<?php echo "<img src='http://a.rgbimg.com/cache1pG5f6/users/g/gr/groningen/300/mOaMyty.jpg' onload='initialize_game(\"$username\")'>"; ?>
+<img src='http://a.rgbimg.com/cache1pG5f6/users/g/gr/groningen/300/mOaMyty.jpg'>
 <h2>HTML5 War Game</h2>
-<canvas id='field' width='1000' height='1000'>You need to update your browser, bro</canvas><br>
+<canvas id='field' width='1100' height='500'>You need to update your browser, bro</canvas><br>
+<?php echo "<button class='btn btn-lg btn-primary btn-block' onclick='initialize_game(\"$username\")'>Play!</button>"; ?>
 <p id='score' name='score'></p>
 <a href='gamelogout.php'>Logout</a>
 </div>
-<img class='hidden' id='card' src='http://upload.wikimedia.org/wikipedia/commons/9/9b/Poker-sm-212-Ks.png' height='200' width='150'>
 <?php mysql_close($con); ?>
 </body>
 </html>

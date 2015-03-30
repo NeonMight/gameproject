@@ -117,19 +117,31 @@ function initialize_game(usr)
   var offset = 0;
   for (var i = 0; i < 3; i++)
   {
-    renderCard(deck.pop(),300+offset,750);
-    renderCard(deck.pop(),300+offset,250);
+    renderCard(deck.pop(),500+offset,400,1);
+    renderCard(1,150+offset,100,0);
     //renderCard(1,300+offset,250); this will display the card back
-    offset += 250;
+    offset += 200;
   }
 }
 
-function renderCard(v,x,y)
+function renderCard(v,x,y,uoo)
 {
     var raster = new paper.Raster();
     raster.source = 'http://104.130.213.200/img/card'+v+'.png';
-    raster.scale(.45);
+    raster.scale(.25);
     raster.position.x = x;
     raster.position.y = y;
-    raster.onClick = function(event){alert('You played a '+v+'!');}
+    if(uoo == 1)
+    {
+      raster.onClick = function(event){playCard(v);raster.position.y-=70;}
+    }
+    else
+    {
+      raster.rotate(180);
+    }
+}
+
+function playCard(v)
+{
+  alert('You played a '+v+'!');
 }
