@@ -18,7 +18,8 @@ function shuffle(array)
   return array;
 }
 
-var io = require('socket.io')(80);
+var io = require('socket.io')(1337);
+console.log('Server listening on port 1337');
 var num_players = 0;
 //create global deck
 var cards_played = 0;
@@ -35,6 +36,7 @@ shuffle(deck);
 
 io.on('connection', function(socket)
 {
+  console.log('User has connected');
   num_players++;
   if(num_players < 2)
   {
