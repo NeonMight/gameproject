@@ -64,8 +64,16 @@ io.on('connection', function(socket)
     cards_played++;
     if(cards_played == 2)
     {
-      if (first_card > val) socket.emit('first','First player wins');
-      else socket.emit('second','Second player wins');
+      if (first_card > val)
+      {
+          socket.emit('first','First player wins');
+          setTimeout(function(){io.sockets.emit('reset',1);},3000);
+      }
+      else
+      {
+        socket.emit('second','Second player wins');
+        setTimeout(function(){io.sockets.emit('reset',1);},3000);
+      }
       first_card = 0;
       cards_played = 0;
     }

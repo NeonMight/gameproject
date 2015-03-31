@@ -85,6 +85,8 @@ function initialize_game(usr)
   paper.setup(canv);
   var socket = setUpSocket();
   socket.on('full',function(data){alert(data);});
+  socket.on('first',function(data){alert(data);});
+  socket.on('second',function(data){alert(data);});
   socket.on('card',function(data)
   {
     if(data == 1)
@@ -93,8 +95,6 @@ function initialize_game(usr)
     }
     else renderCard(500,150,0,socket);
   });
-  socket.on('first',function(data){alert(data);});
-  socket.on('second',function(data){alert(data);})
 }
 // give cards a unique id
 function renderCard(x,y,uoo,s)
@@ -108,6 +108,7 @@ function renderCard(x,y,uoo,s)
     {
       raster.onClick = function(event){raster.position.y-=70;s.emit('play',uoo);} //pass the user
       s.on('flipu',function(val){raster.source='http://104.130.213.200/img/card'+val+'.png';});
+      s.on('reset',function(){alert('resetting...');raster.source='http://104.130.213.200/img/card1.png';raster.position.y+=70;});
     }
     else
     {
