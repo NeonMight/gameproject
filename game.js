@@ -149,9 +149,9 @@ function playCard(v)
 
 function setUp()
 {
-  var socket = io('https://localhost:1337');
+  var socket = io.connect('http://localhost:3001');
   socket.on('connect',function()
   {
-    socket.send('message');
+    socket.send('play');
   });
 }

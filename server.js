@@ -19,8 +19,8 @@ function shuffle(array)
   return array;
 }
 
-var io = require('socket.io')(1337);
-console.log('Server listening on port 1337');
+var io = require('socket.io')(3001);
+console.log('Server listening on port 3001');
 var num_players = 0;
 //create global deck
 var cards_played = 0;
@@ -39,15 +39,15 @@ io.on('connection', function(socket)
 {
   console.log('User has connected');
   num_players++;
-  if(num_players < 2)
+  if(num_players < 3)
   {
     //pop off of deck and send back to player
   }
   else
   {
-    console.log('There are 2 players already playing');
+    console.log('Player capacity has been reached. Please wait until a spot has opened');
   }
-  socket.on('message', function()
+  socket.on('play', function()
   {
     console.log('A card has been played');
     //receive data played by user here
