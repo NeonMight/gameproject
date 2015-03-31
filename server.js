@@ -42,6 +42,10 @@ io.on('connection', function(socket)
   if(num_players < 3)
   {
     //pop off of deck and send back to player
+    for (var i = 0; i < 1; i++)
+    {
+      socket.emit('card',deck.pop())
+    }
   }
   else
   {
@@ -49,7 +53,7 @@ io.on('connection', function(socket)
   }
   socket.on('play', function()
   {
-    console.log('A card has been played');
+    console.log('Card played');
     //receive data played by user here
     cards_played++;
     if(cards_played == 2)
@@ -57,6 +61,6 @@ io.on('connection', function(socket)
       //decide which one is larger here
     }
   });
-  socket.on('disconnect',function(){num_players--;});
+  socket.on('disconnect',function(){num_players--;console.log('User has disconnected');});
 }
 );

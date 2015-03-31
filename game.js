@@ -104,25 +104,12 @@ function initialize_game(usr)
 {
   var canv = document.getElementById('field');
   var ctx = canv.getContext('2d');
-  var deck = [];
-  for (var i = 2; i<10; i++)
-  {
-    deck.push(i);
-    deck.push(i);
-    deck.push(i);
-    deck.push(i);
-  }
-  shuffle(deck);
   paper.setup(canv);
-  var offset = 0;
-  for (var i = 0; i < 3; i++)
+  var socket = setUpSocket();
+  socket.on('card',function(data)
   {
-    renderCard(deck.pop(),500+offset,400,1);
-    renderCard(1,150+offset,100,0);
-    //renderCard(1,300+offset,250); this will display the card back
-    offset += 200;
-  }
-  setUp();
+    renderCard(data,100,450,1);
+  });
 }
 
 function renderCard(v,x,y,uoo)
@@ -147,11 +134,8 @@ function playCard(v)
   alert('You played a '+v+'!');
 }
 
-function setUp()
+function setUpSocket()
 {
   var socket = io.connect('http://localhost:3001');
-  socket.on('connect',function()
-  {
-    socket.send('play');
-  });
+  return socket;
 }
