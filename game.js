@@ -78,28 +78,6 @@ function userAvail() //change event to onkeyup
   }
 }
 
-
-//shuffle function taken from https://github.com/coolaj86/knuth-shuffle
-function shuffle(array)
-{
-  var currentIndex = array.length, temporaryValue, randomIndex ;
-
-  // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
-
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-
-    // And swap it with the current element.
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
-  }
-
-  return array;
-}
-
 function initialize_game(usr)
 {
   var canv = document.getElementById('field');
@@ -109,12 +87,16 @@ function initialize_game(usr)
   socket.on('full',function(data){alert(data);});
   socket.on('card',function(data)
   {
-    renderCard(500,400,1,socket);
+    if(data == 1)
+    {
+      renderCard(500,400,1,socket);
+    }
+    else renderCard(500,150,0,socket);
   });
   socket.on('first',function(data){alert(data);});
   socket.on('second',function(data){alert(data);})
 }
-
+// give cards a unique id
 function renderCard(x,y,uoo,s)
 {
     var raster = new paper.Raster();
@@ -125,12 +107,12 @@ function renderCard(x,y,uoo,s)
     if(uoo == 1)
     {
       raster.onClick = function(event){raster.position.y-=70;s.emit('play',uoo);} //pass the user
-      s.on('flip',function(val){raster.source='http://104.130.213.200/img/card'+val+'.png';});
+      s.on('flipu',function(val){raster.source='http://104.130.213.200/img/card'+val+'.png';});
     }
     else
     {
       raster.rotate(180);
-      s.on('flip',function(val){raster.source='http://104.130.213.200/img/card'+val+'.png';});
+      s.on('flipo',function(val){raster.source='http://104.130.213.200/img/card'+val+'.png';});
     }
 }
 

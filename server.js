@@ -44,23 +44,26 @@ io.on('connection', function(socket)
     //pop off of deck and send back to player
     for (var i = 0; i < 1; i++)
     {
-      socket.emit('card',1); //pass in the username here
+      socket.emit('card',1);
+      socket.emit('card',0);
     }
   }
   else
   {
-    socket.emit('full','Player capacity reached. Please wait for a spot to open.')
+    socket.emit('full','Player capacity reached. Please wait for a spot to open.');
   }
-  socket.on('play', function()
+  socket.on('play', function(uoo)
   {
     var val = deck.pop();
     console.log('User has played a '+val);
-    socket.emit('flip',val);
-    //receive data played by user here
+    if (uoo == 1)
+    {
+      socket.emit('flipu',val);
+    }
+    else socket.emit('flipo',val);
     cards_played++;
     if(cards_played == 2)
     {
-      //decide which one is larger here
       if (first_card > val) socket.emit('first','First player wins');
       else socket.emit('second','Second player wins');
       first_card = 0;
