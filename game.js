@@ -109,32 +109,29 @@ function initialize_game(usr)
   socket.on('full',function(data){alert(data);});
   socket.on('card',function(data)
   {
-    renderCard(data,500,400,1,socket);
+    renderCard(500,400,1,socket);
   });
   socket.on('first',function(data){alert(data);});
   socket.on('second',function(data){alert(data);})
 }
 
-function renderCard(v,x,y,uoo,s)
+function renderCard(x,y,uoo,s)
 {
     var raster = new paper.Raster();
-    raster.source = 'http://104.130.213.200/img/card'+v+'.png';
+    raster.source = 'http://104.130.213.200/img/card1.png';
     raster.scale(.25);
     raster.position.x = x;
     raster.position.y = y;
     if(uoo == 1)
     {
-      raster.onClick = function(event){playCard(v);raster.position.y-=70;s.emit('play',v);}
+      raster.onClick = function(event){raster.position.y-=70;s.emit('play',uoo);} //pass the user
+      s.on('flip',function(val){raster.source='http://104.130.213.200/img/card'+val+'.png';});
     }
     else
     {
       raster.rotate(180);
+      s.on('flip',function(val){raster.source='http://104.130.213.200/img/card'+val+'.png';});
     }
-}
-
-function playCard(v)
-{
-  alert('You played a '+v+'!');
 }
 
 function setUpSocket()
