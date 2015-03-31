@@ -106,13 +106,16 @@ function initialize_game(usr)
   var ctx = canv.getContext('2d');
   paper.setup(canv);
   var socket = setUpSocket();
+  socket.on('full',function(data){alert(data);});
   socket.on('card',function(data)
   {
-    renderCard(data,100,450,1);
+    renderCard(data,500,400,1,socket);
   });
+  socket.on('first',function(data){alert(data);});
+  socket.on('second',function(data){alert(data);})
 }
 
-function renderCard(v,x,y,uoo)
+function renderCard(v,x,y,uoo,s)
 {
     var raster = new paper.Raster();
     raster.source = 'http://104.130.213.200/img/card'+v+'.png';
@@ -121,7 +124,7 @@ function renderCard(v,x,y,uoo)
     raster.position.y = y;
     if(uoo == 1)
     {
-      raster.onClick = function(event){playCard(v);raster.position.y-=70;}
+      raster.onClick = function(event){playCard(v);raster.position.y-=70;s.emit('play',v);}
     }
     else
     {

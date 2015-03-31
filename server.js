@@ -49,17 +49,22 @@ io.on('connection', function(socket)
   }
   else
   {
-    console.log('Player capacity has been reached. Please wait until a spot has opened');
+    socket.emit('full','Player capacity reached. Please wait for a spot to open.')
   }
-  socket.on('play', function()
+  socket.on('play', function(val)
   {
-    console.log('Card played');
+    console.log('User played a '+val);
     //receive data played by user here
     cards_played++;
     if(cards_played == 2)
     {
       //decide which one is larger here
+      if (first_card > val) socket.emit('first','First player wins');
+      else socket.emit('second','Second player wins');
+      first_card = 0;
+      cards_played = 0;
     }
+    else first_card = val;
   });
   socket.on('disconnect',function(){num_players--;console.log('User has disconnected');});
 }

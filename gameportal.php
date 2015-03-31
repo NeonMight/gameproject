@@ -1,6 +1,10 @@
 <?php
 include 'gameconnect.php';
 session_start();
+if (!empty($_SESSION['username']))
+{
+  header('location:gamemain.php');
+}
 ?>
 <html>
 <head>
