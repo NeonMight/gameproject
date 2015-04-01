@@ -10,11 +10,14 @@ $username = $_SESSION['username'];
 ?>
 <html>
 <head>
+<nav class='navbar navbar-default' role='navigation'>
+<a href='gamelogout.php'>Logout</a>
+</nav>
 <title>Welcome!</title>
 <!--bootstrap minified css-->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <style>
-canvas {border: 2px solid black;}
+canvas {background-color: black;}
 </style>
 <!--jquery minified js-->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -30,7 +33,6 @@ canvas {border: 2px solid black;}
 <canvas id='field' width='1100' height='500'>You need to update your browser, bro</canvas><br>
 <?php echo "<button class='btn btn-lg btn-primary btn-block' onclick='initialize_game(\"$username\")'>Play!</button>"; ?>
 <p id='score' name='score'></p>
-<a href='gamelogout.php'>Logout</a>
 </div>
 <?php mysql_close($con); ?>
 </body>

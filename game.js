@@ -83,6 +83,10 @@ function initialize_game(usr)
   var canv = document.getElementById('field');
   var ctx = canv.getContext('2d');
   paper.setup(canv);
+  var background = new paper.Raster();
+  background.source = 'http://catalog.windfalllumber.com/wp-content/uploads/2012/10/TRGRP_211_001_R72-e1352741367732.jpg';
+  background.scale(1);
+  background.position.x += 400;
   var socket = setUpSocket();
   socket.on('full',function(data){alert(data);});
   socket.on('first',function(data){alert(data);});
@@ -108,7 +112,7 @@ function renderCard(x,y,uoo,s)
     {
       raster.onClick = function(event){raster.position.y-=70;s.emit('play',uoo);} //pass the user
       s.on('flipu',function(val){raster.source='http://104.130.213.200/img/card'+val+'.png';});
-      s.on('reset',function(){alert('resetting...');raster.source='http://104.130.213.200/img/card1.png';raster.position.y+=70;});
+      s.on('reset',function(){raster.source='http://104.130.213.200/img/card1.png';raster.position.y+=70;});
     }
     else
     {
