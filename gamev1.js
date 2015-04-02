@@ -87,14 +87,19 @@ function initialize_game(usr)
   background.source = 'http://catalog.windfalllumber.com/wp-content/uploads/2012/10/TRGRP_211_001_R72-e1352741367732.jpg';
   background.scale(1);
   background.position.x += 400;
-  var socket = io.connect('http://localhost:3001');
-  socket.on('connect',function()
+  var socket = setUpSocket();
+  socket.on('full',function(data){alert(data);});
+  socket.on('first',function(data){alert(data);});
+  socket.on('second',function(data){alert(data);});
+  socket.on('card',function(data)
   {
-    socket.emit('adduser',usr);
+    if(data == 1)
+    {
+      renderCard(500,400,1,socket);
+    }
+    else renderCard(500,150,0,socket);
   });
-  
 }
-
 // give cards a unique id
 function renderCard(x,y,uoo,s)
 {
@@ -106,12 +111,18 @@ function renderCard(x,y,uoo,s)
     if(uoo == 1)
     {
       raster.onClick = function(event){raster.position.y-=70;s.emit('play',uoo);} //pass the user
-      //s.on('flip',function(val){raster.source='http://104.130.213.200/img/card'+val+'.png';});
-      //s.on('reset',function(){raster.source='http://104.130.213.200/img/card1.png';raster.position.y+=70;});
+      s.on('flipu',function(val){raster.source='http://104.130.213.200/img/card'+val+'.png';});
+      s.on('reset',function(){raster.source='http://104.130.213.200/img/card1.png';raster.position.y+=70;});
     }
     else
     {
       raster.rotate(180);
-      //s.on('flipo',function(val){raster.source='http://104.130.213.200/img/card'+val+'.png';});
+      s.on('flipo',function(val){raster.source='http://104.130.213.200/img/card'+val+'.png';});
     }
+}
+
+function setUpSocket()
+{
+  var socket = io.connect('http://localhost:3001');
+  return socket;
 }

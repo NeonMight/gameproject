@@ -19,66 +19,59 @@ function shuffle(array)
   return array;
 }
 
-var io = require('socket.io')(3001);
-console.log('Server listening on port 3001');
-var num_players = 0;
-//create global deck
-var cards_played = 0;
-var first_card = 0;
-var deck = [];
-for (var i = 2; i<10; i++)
+//return shuffled deck of cards
+function createDeck()
 {
-  deck.push(i);
-  deck.push(i);
-  deck.push(i);
-  deck.push(i);
+  var deck = [];
+  for (var i = 2; i < 10; i++)
+  {
+    deck.push(i);
+    deck.push(i);
+    deck.push(i);
+    deck.push(i);
+  }
+  shuffle(deck);
+  return deck;
 }
-shuffle(deck);
 
-io.on('connection', function(socket)
+var rooms = ['Lobby'];
+var decks = [];
+var usernames = {};
+var userCount = 0;
+var roomCount = 0;
+var app = require('http').createServer();
+var io = require('socket.io').listen(app);
+app.listen(3001);
+console.log('Server listening on port 3001');
+//handler for connection
+io.sockets.on('connection', function(socket)
 {
-  console.log('User has connected');
-  num_players++;
-  if(num_players < 3)
+  socket.on('adduser',function(username)
   {
-    //pop off of deck and send back to player
-    for (var i = 0; i < 1; i++)
+    socket.username = username;
+    socket.room = 'Lobby';
+    usernames[username] = username;
+    socket.join('Lobby');
+    if(userCount%2 == 0)
     {
-      socket.emit('card',1);
-      socket.emit('card',0);
+      rooms.push('room'+roomCount);
+      roomCount++;
+      var newdeck = createDeck();
+      decks.push(newdeck);
     }
-  }
-  else
-  {
-    socket.emit('full','Player capacity reached. Please wait for a spot to open.');
-  }
-  socket.on('play', function(uoo)
-  {
-    var val = deck.pop();
-    console.log('User has played a '+val);
-    if (uoo == 1)
-    {
-      socket.emit('flipu',val);
-    }
-    else socket.emit('flipo',val);
-    cards_played++;
-    if(cards_played == 2)
-    {
-      if (first_card > val)
-      {
-          socket.emit('first','First player wins');
-          setTimeout(function(){io.sockets.emit('reset',1);},3000);
-      }
-      else
-      {
-        socket.emit('second','Second player wins');
-        setTimeout(function(){io.sockets.emit('reset',1);},3000);
-      }
-      first_card = 0;
-      cards_played = 0;
-    }
-    else first_card = val;
+    userCount++;
+    //now join next available room
+    socket.leave('Lobby');
+    //console.log('Migrating user to new room...');
+    socket.room = 'room'+(Math.floor(userCount/2));
+    socket.join(rooms[socket.room]);
+    console.log(username+' has been added to '+socket.room);
   });
-  socket.on('disconnect',function(){num_players--;console.log('User has disconnected');});
+  socket.on('disconnect',function()
+  {
+    delete usernames[socket.username];
+    socket.leave(socket.room);
+    console.log('User has left.');
+  })
 }
-);
+)
