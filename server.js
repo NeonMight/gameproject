@@ -43,7 +43,9 @@ var app = require('http').createServer();
 var io = require('socket.io').listen(app);
 app.listen(3001);
 console.log('Server listening on port 3001');
+
 //handler for connection
+
 io.sockets.on('connection', function(socket)
 {
   socket.on('adduser',function(username)
@@ -59,14 +61,20 @@ io.sockets.on('connection', function(socket)
       var newdeck = createDeck();
       decks.push(newdeck);
     }
-    userCount++;
     //now join next available room
     socket.leave('Lobby');
     //console.log('Migrating user to new room...');
-    socket.room = 'room'+(Math.floor(userCount/2));
-    socket.join(rooms[socket.room]);
-    console.log(username+' has been added to '+socket.room);
+    socket.room = Math.floor(userCount/2);
+    userCount++;
+    socket.join(rooms['room'+socket.room]);
+    console.log(username+' has been added to room'+socket.room);
+    socket.emit('card',username);
   });
+  socket.on('play',function()
+  {
+    var val = decks[socket.room].pop();
+    socket.emit('flip',val);
+  })
   socket.on('disconnect',function()
   {
     delete usernames[socket.username];
