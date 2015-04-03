@@ -43,6 +43,10 @@ for(var i = 0; i < 51; i++)
 }
 var usernames = {};
 var firstUser = [];
+for(var i = 0; i < 51; i++)
+{
+  firstUser.push(0);
+}
 var userCount = 0;
 var roomCount = 0;
 var app = require('http').createServer();
@@ -74,8 +78,14 @@ io.sockets.on('connection', function(socket)
     userCount++;
     socket.join('room'+socket.room);
     console.log(username+' has been added to room # '+socket.room);
-    socket.emit('card',username);
-    socket.emit('card','other');
+    io.sockets.in('room'+socket.room).emit('card',username);
+    // check if another user is already in room
+    if(firstUser[socket.room] != 0)
+    {
+      io.sockets.in('room'+socket.room).emit('card',firstUser[socket.room]);
+      firstUser[socket.room] = 0;
+    }
+    else firstUser[socket.room] = username;
   });
   socket.on('play',function(user)
   {

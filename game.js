@@ -124,7 +124,7 @@ function renderCard(x,y,u,v,s)
     raster.data = u;
     if (u == v)
     {
-      raster.onClick = function(event){raster.position.y-=70;s.emit('play',u);} //pass the user
+      raster.onClick = function(event){s.emit('play',u);} //pass the user
     }
     else raster.rotate(180);
     s.on('flip',function(data)
@@ -133,7 +133,7 @@ function renderCard(x,y,u,v,s)
       if (data.owner == raster.data)
       {
         raster.source = 'http://104.130.213.200/img/card'+data.val+'.png';
-        s.on('reset',function(){raster.source='http://104.130.213.200/img/card1.png';raster.position.y=400;})
+        s.on('reset',function(){raster.source='http://104.130.213.200/img/card1.png';raster.position.y=y;})
       }
     })
 }
