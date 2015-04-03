@@ -94,21 +94,36 @@ function initialize_game(usr)
   });
   socket.on('card',function(val)
   {
-    renderCard(500,400,usr,socket);
+    if(usr == val)
+    {
+      renderCard(500,400,usr,usr,socket);
+    }
+    else renderCard(500,150,val,usr,socket)
   });
+  socket.on('winner',function(data){alert('The winner is '+data);});
 }
 
 // give cards a unique id
-function renderCard(x,y,u,s)
+function renderCard(x,y,u,v,s)
 {
     var raster = new paper.Raster();
     raster.source = 'http://104.130.213.200/img/card1.png';
     raster.scale(.25);
     raster.position.x = x;
     raster.position.y = y;
-    raster.onClick = function(event){raster.position.y-=70;s.emit('play',u);} //pass the user
-    s.on('flip',function(val)
+    raster.data = u;
+    if (u == v)
     {
-      raster.source = 'http://104.130.213.200/img/card'+val+'.png';
+      raster.onClick = function(event){raster.position.y-=70;s.emit('play',u);} //pass the user
+    }
+    else raster.rotate(180);
+    s.on('flip',function(data)
+    {
+      console.log('flipping card...');
+      if (data.owner == raster.data)
+      {
+        raster.source = 'http://104.130.213.200/img/card'+data.val+'.png';
+        s.on('reset',function(){raster.source='http://104.130.213.200/img/card1.png';raster.position.y=400;})
+      }
     })
 }

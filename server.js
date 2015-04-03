@@ -36,6 +36,11 @@ function createDeck()
 
 var rooms = ['Lobby'];
 var decks = [];
+var firstPlay = [];
+for(var i = 0; i < 51; i++)
+{
+  firstPlay.push(0);
+}
 var usernames = {};
 var userCount = 0;
 var roomCount = 0;
@@ -66,14 +71,27 @@ io.sockets.on('connection', function(socket)
     //console.log('Migrating user to new room...');
     socket.room = Math.floor(userCount/2);
     userCount++;
-    socket.join(rooms['room'+socket.room]);
-    console.log(username+' has been added to room'+socket.room);
+    socket.join('room'+socket.room);
+    console.log(username+' has been added to room # '+socket.room);
     socket.emit('card',username);
+    socket.emit('card','other');
   });
-  socket.on('play',function()
+  socket.on('play',function(user)
   {
-    var val = decks[socket.room].pop();
-    socket.emit('flip',val);
+    var id = 'room'+socket.room;
+    console.log(id);
+    var value = decks[socket.room].pop();
+    io.sockets.in(id).emit('flip',{val: value, owner: user});
+    if (firstPlay[socket.room] != 0)
+    {
+      console.log('two cards played');
+      if (firstPlay[socket.room > value]) io.sockets.in(id).emit('winner',user);
+      else io.sockets.in(id).emit('winner','other');
+      firstPlay[socket.room] = 0;
+      setTimeout(function(){io.sockets.in(id).emit('reset','me');},3000);
+    }
+    else firstPlay[socket.room] = value;
+    console.log(user+' played a '+value);
   })
   socket.on('disconnect',function()
   {

@@ -28,7 +28,6 @@ canvas {background-color: black;}
 </head>
 <body>
 <div class='container'>
-<img src='http://a.rgbimg.com/cache1pG5f6/users/g/gr/groningen/300/mOaMyty.jpg'>
 <h2>HTML5 War Game</h2>
 <canvas id='field' width='1100' height='500'>You need to update your browser, bro</canvas><br>
 <?php echo "<button class='btn btn-lg btn-primary btn-block' onclick='initialize_game(\"$username\")'>Play!</button>"; ?>

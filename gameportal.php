@@ -31,7 +31,6 @@ if (!empty($_SESSION['account']))
 }
 ?>
 <div class='form-group'>
-<img src='http://a.rgbimg.com/cache1pG5f6/users/g/gr/groningen/300/mOaMyty.jpg'>
 <h3>Log In</h3>
 <form method='post' action='gameverify.php' onsubmit='return validateLogin();'>
 <div class='form-group'><input name='username' id='username' placeholder='Username' class='form-control'></div>
