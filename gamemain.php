@@ -31,7 +31,7 @@ canvas {background-color: black;}
 <h2>HTML5 War Game</h2>
 <canvas id='field' width='1100' height='500'>You need to update your browser, bro</canvas><br>
 <?php echo "<button class='btn btn-lg btn-primary btn-block' onclick='initialize_game(\"$username\")'>Play!</button>"; ?>
-<p id='score' name='score'></p>
+<p id='score' name='score' class='lead'>Your score: <b>0</b></p>
 </div>
 <?php mysql_close($con); ?>
 </body>

@@ -42,6 +42,7 @@ for(var i = 0; i < 51; i++)
   firstPlay.push(0);
 }
 var usernames = {};
+var firstUser = [];
 var userCount = 0;
 var roomCount = 0;
 var app = require('http').createServer();
@@ -79,25 +80,26 @@ io.sockets.on('connection', function(socket)
   socket.on('play',function(user)
   {
     var id = 'room'+socket.room;
-    console.log(id);
     var value = decks[socket.room].pop();
     io.sockets.in(id).emit('flip',{val: value, owner: user});
     if (firstPlay[socket.room] != 0)
     {
-      console.log('two cards played');
-      if (firstPlay[socket.room > value]) io.sockets.in(id).emit('winner',user);
-      else io.sockets.in(id).emit('winner','other');
+      if (firstPlay[socket.room] < value) io.sockets.in(id).emit('winner',user);
+      else io.sockets.in(id).emit('winner',firstUser[socket.room]);
       firstPlay[socket.room] = 0;
       setTimeout(function(){io.sockets.in(id).emit('reset','me');},3000);
     }
-    else firstPlay[socket.room] = value;
+    else {
+      firstPlay[socket.room] = value;
+      firstUser[socket.room] = user;
+    }
     console.log(user+' played a '+value);
   })
   socket.on('disconnect',function()
   {
     delete usernames[socket.username];
     socket.leave(socket.room);
-    console.log('User has left.');
+    console.log('A user has left.');
   })
 }
 )

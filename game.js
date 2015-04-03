@@ -81,6 +81,8 @@ function userAvail() //change event to onkeyup
 function initialize_game(usr)
 {
   var canv = document.getElementById('field');
+  var scoreField = document.getElementById('score');
+  var score = 0;
   var ctx = canv.getContext('2d');
   paper.setup(canv);
   var background = new paper.Raster();
@@ -100,7 +102,15 @@ function initialize_game(usr)
     }
     else renderCard(500,150,val,usr,socket)
   });
-  socket.on('winner',function(data){alert('The winner is '+data);});
+  socket.on('winner',function(data)
+    {
+      alert(data+' wins!');
+      if (usr == data)
+      {
+        score += 10;
+        scoreField.innerHTML = 'Your score: <b>'+score+'</b>';
+      }
+    });
 }
 
 // give cards a unique id
