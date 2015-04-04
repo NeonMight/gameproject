@@ -29,6 +29,8 @@ function createDeck()
     deck.push(i);
     deck.push(i);
     deck.push(i);
+    deck.push(i);
+    deck.push(i);
   }
   shuffle(deck);
   return deck;

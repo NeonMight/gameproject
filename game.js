@@ -118,6 +118,7 @@ function initialize_game(usr)
   socket.on('gameend',function(winner)
   {
     alert('Game over! '+winner+' wins!');
+    paper.project.clear();
   })
 }
 
