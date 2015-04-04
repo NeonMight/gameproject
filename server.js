@@ -105,6 +105,10 @@ io.sockets.on('connection', function(socket)
     }
     console.log(user+' played a '+value);
   })
+  socket.on('gameover',function(winner)
+  {
+    io.sockets.in('room'+socket.room).emit('gameend',winner);
+  })
   socket.on('disconnect',function()
   {
     delete usernames[socket.username];

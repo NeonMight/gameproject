@@ -110,7 +110,15 @@ function initialize_game(usr)
         score += 10;
         scoreField.innerHTML = 'Your score: <b>'+score+'</b>';
       }
+      if (score >= 100)
+      {
+        socket.emit('gameover',usr);
+      }
     });
+  socket.on('gameend',function(winner)
+  {
+    alert('Game over! '+winner+' wins!');
+  })
 }
 
 // give cards a unique id
