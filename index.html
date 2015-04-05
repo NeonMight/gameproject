@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="img/favicon.png">
+
+    <title>Irreconcilable Differences</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+	<link href="css/bootstrap-theme.css" rel="stylesheet">
+
+    <!-- siimple style -->
+    <link href="css/style.css" rel="stylesheet">
+    
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+	<!--script from keithscode.com-->
+	<script>
+	function verifyPass(){
+		var pass1 = document.getElementByID('pass1');
+		var pass2 = document.getElementByID('password');
+		var message = document.getElementByID('confirmMessage');
+		var match = "#66cc66";
+		var noMatch = "#ff6666";
+		if(pass1.value == password.value){
+			password.style.background-color = match;
+			message.style.color = match;
+			message.innerHTML = "The passwords that you have entered match!"
+		}else{
+			password.style.background-color = noMatch;
+			message.style.color = noMatch;
+			message.innerHTML = "The passwords that you have entered do NOT match!"
+		}
+	}
+	</script>
+	<style>
+	h1  {color:white; text-shadow: 0px 1px 4px black;}
+	h2	{color:white; text-shadow: 0px 2px 4px black;}
+	#SGicon {
+			margin:0;
+			padding:0;
+			width:40px;
+			max-width:100%;
+			height:auto;
+		}
+	</style>
+  </head>
+  
+  <body>
+
+    <!-- Fixed navbar -->
+   <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+		  <a class="navbar-brand" href="index.html">
+            <img id="SGicon" alt="ASGG" src="http://104.130.213.200/img/icon.png">
+          </a>
+          <a class="navbar-brand" href="index.html">Awkward Seagull Games</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="php/gamemain.php">Play Games</a></li>
+			<li><a href="php/gamelogout.php">Log Out</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+	<div id="header">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6">
+					<h1>Irreconcilable Differences</h1>
+					<h2 class="subtitle">A game of browser domination</h2>
+					<form class="form-inline signup" role="form">
+						<div class="form-group">
+							<input type="username" class="form-control" id="username" placeholder="Enter a Username">
+							<span id="confirmMessage" class="confirmMessage">
+							<input type="password" class="form-control" id="pass1" placeholder="Enter a Password">
+							<input type="password" class="form-control" id="password" onkeyup"verifyPass(); return false;" placeholder="Verify your Password">
+							</span>
+						</div>
+					  <button type="submit" class="btn btn-theme" onclick="php/gameregister.php">Register</button>
+					</form>					
+				</div>
+				<div class="col-lg-4 col-lg-offset-2">
+					<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+					  <ol class="carousel-indicators">
+						<li data-target="#carousel-example-generic" data-slide-to="0" class=""></li>
+						<li data-target="#carousel-example-generic" data-slide-to="1" class="active"></li>
+						<li data-target="#carousel-example-generic" data-slide-to="2" class=""></li>
+						<li data-target="#carousel-example-generic" data-slide-to="3" class=""></li>
+						<li data-target="#carousel-example-generic" data-slide-to="4" class=""></li>
+						<li data-target="#carousel-example-generic" data-slide-to="5" class=""></li>
+						<li data-target="#carousel-example-generic" data-slide-to="6" class=""></li>
+						<li data-target="#carousel-example-generic" data-slide-to="7" class=""></li>
+						<li data-target="#carousel-example-generic" data-slide-to="8" class=""></li>
+						
+					  </ol>					
+					  <!-- slides -->
+					  <div class="carousel-inner">
+						<div class="item">
+						  <img src="img/card2.png" alt="">
+						</div>
+						<div class="item active">
+						  <img src="img/card3.png" alt="">
+						</div>
+						<div class="item">
+						  <img src="img/card4.png" alt="">
+						</div>
+						<div class="item">
+						  <img src="img/card5.png" alt="">
+						</div>
+						<div class="item">
+						  <img src="img/card6.png" alt="">
+						</div>
+						<div class="item">
+						  <img src="img/card7.png" alt="">
+						</div>
+						<div class="item">
+						  <img src="img/card8.png" alt="">
+						</div>
+						<div class="item">
+						  <img src="img/card9.png" alt="">
+						</div>
+						<div class="item">
+						  <img src="img/card10.png" alt="">
+						</div>
+					  </div>
+					</div>		
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	<div id="footer">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6 col-lg-offset-3">
+					<!--Copyright © 2014 - Bootstraptaste.com-->
+			</div>
+		</div>		
+	</div>	
+	</div>
+
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+  
+
+</body>
+
+</html>
