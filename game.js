@@ -119,6 +119,11 @@ function initialize_game(usr)
   {
     alert('Game over! '+winner+' wins!');
     paper.project.clear();
+    var request = getXMLHttpObject();
+    var params = 'action=updateScore&text='+winner+'&sid='+Math.random();
+    request.open('post','gamerequest.php',true);
+    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    request.send(params);
   })
 }
 

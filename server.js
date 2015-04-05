@@ -23,9 +23,8 @@ function shuffle(array)
 function createDeck()
 {
   var deck = [];
-  for (var i = 2; i < 10; i++)
+  for (var i = 2; i < 11; i++)
   {
-    deck.push(i);
     deck.push(i);
     deck.push(i);
     deck.push(i);

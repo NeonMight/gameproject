@@ -11,14 +11,17 @@ if ($action = 'checkAvailUsers')
   echo $count;
 }
 
-if ($action = 'getScore')
+if ($action = 'updateScore')
 {
   $username = $_POST['text'];
   $sql = 'select score from accounts where username= "'.$username.'";';
   $results = mysql_query($sql)or die('Error fetching score'.mysql_error());
   while($row = mysql_fetch_assoc($results))
   {
-    echo $row['score'];
+    $score = $row['score'];
   }
+  $score += 10;
+  $update = 'update accounts set score = '.$score.'where username = "'.$username.'";';
+  mysql_query($update)or die('Could not update score'.mysql_error());
 }
 ?>

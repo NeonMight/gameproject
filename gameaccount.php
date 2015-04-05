@@ -19,7 +19,7 @@ $username = $_SESSION['username'];
   height:auto;
 }
 </style>
-<title>WAR!</title>
+<title><?php echo $username.": Account data" ?></title>
 <!--bootstrap minified css-->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <style>
@@ -41,13 +41,13 @@ canvas {background-color: black;}
       </a>
       <a class="navbar-brand" href="#">Awkward Seagull Games</a>
     </div>
-
+    <?php //echo "<form method='post' action='gameaccount.php' id='viewaccount' name='viewaccount'><input type='hidden' value='".$username."' name = 'user'></form>"?>
     <ul class="nav navbar-nav">
       <li><a href="gameaccount.php"><?php echo "Welcome ".$username; ?></a></li>
     </ul>
 
     <ul class="nav navbar-nav">
-      <li><a href="#">Play Games</a></li>
+      <li><a href="gamemain.php">Play Games</a></li>
     </ul>
 
     <ul class="nav navbar-nav navbar-right">
@@ -56,11 +56,16 @@ canvas {background-color: black;}
   </div>
 </nav>
 <div class='container'>
-<h2>WAR!</h2>
-<canvas id='field' width='1100' height='500'>You need to update your browser, bro</canvas><br>
-<?php echo "<button class='btn btn-lg btn-primary btn-block' onclick='initialize_game(\"$username\")'>Play!</button>"; ?>
-<p id='score' name='score' class='lead'>Your score: <b>0</b></p>
+<?php
+$sql = "select score from accounts where username = '".$username."';";
+$resultset = mysql_query($sql)or die('Could not fetch user data '.mysql_error());
+while ($row = mysql_fetch_assoc($resultset))
+{
+  echo "<h2>".$username."</h2>";
+  echo "<p>Your total score: <b>".$row['score']."</b><p>";
+}
+mysql_close($con);
+?>
 </div>
-<?php mysql_close($con); ?>
 </body>
 </html>
