@@ -22,25 +22,6 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
-	<!--script from keithscode.com-->
-	<script>
-	function verifyPass(){
-		var pass1 = document.getElementByID('pass1');
-		var pass2 = document.getElementByID('password');
-		var message = document.getElementByID('confirmMessage');
-		var match = "#66cc66";
-		var noMatch = "#ff6666";
-		if(pass1.value == password.value){
-			password.style.background-color = match;
-			message.style.color = match;
-			message.innerHTML = "The passwords that you have entered match!"
-		}else{
-			password.style.background-color = noMatch;
-			message.style.color = noMatch;
-			message.innerHTML = "The passwords that you have entered do NOT match!"
-		}
-	}
-	</script>
 	<style>
 	h1  {color:white; text-shadow: 0px 1px 4px black;}
 	h2	{color:white; text-shadow: 0px 2px 4px black;}
@@ -84,17 +65,7 @@
 			<div class="row">
 				<div class="col-lg-6">
 					<h1>Irreconcilable Differences</h1>
-					<h2 class="subtitle">A game of browser domination</h2>
-					<form class="form-inline signup" role="form">
-						<div class="form-group">
-							<input type="username" class="form-control" id="username" placeholder="Enter a Username">
-							<span id="confirmMessage" class="confirmMessage">
-							<input type="password" class="form-control" id="pass1" placeholder="Enter a Password">
-							<input type="password" class="form-control" id="password" onkeyup"verifyPass(); return false;" placeholder="Verify your Password">
-							</span>
-						</div>
-					  <button type="submit" class="btn btn-theme" onclick="php/gameregister.php">Register</button>
-					</form>					
+					<h2 class="subtitle">A game of browser domination</h2>	
 				</div>
 				<div class="col-lg-4 col-lg-offset-2">
 					<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
