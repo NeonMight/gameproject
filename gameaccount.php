@@ -10,14 +10,17 @@ $username = $_SESSION['username'];
 ?>
 <html>
 <head>
+<link href="css/style.css" rel="stylesheet">
 <style>
+h1  {color:white; text-shadow: 0px 1px 4px black;}
+h2	{color:white; text-shadow: 0px 2px 4px black;}
 #SGicon {
-  margin:0;
-  padding:0;
-  width:40px;
-  max-width:100%;
-  height:auto;
-}
+    margin:0;
+    padding:0;
+    width:40px;
+    max-width:100%;
+    height:auto;
+  }
 </style>
 <title><?php echo $username.": Account data" ?></title>
 <!--bootstrap minified css-->
@@ -33,7 +36,7 @@ canvas {background-color: black;}
 <script src='game.js' defer></script>
 </head>
 <body>
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
       <a class="navbar-brand" href="gamemain.php">

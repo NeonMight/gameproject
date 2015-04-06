@@ -11,7 +11,7 @@ if ($action = 'checkAvailUsers')
   echo $count;
 }
 
-if ($action = 'updateScore')
+else if ($action = 'updateScore')
 {
   $username = $_POST['text'];
   $sql = 'select score from accounts where username= "'.$username.'";';

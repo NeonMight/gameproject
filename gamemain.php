@@ -10,16 +10,19 @@ $username = $_SESSION['username'];
 ?>
 <html>
 <head>
+<link href="css/style.css" rel="stylesheet">
 <style>
+h1  {color:white; text-shadow: 0px 1px 4px black;}
+h2	{color:white; text-shadow: 0px 2px 4px black;}
 #SGicon {
-  margin:0;
-  padding:0;
-  width:40px;
-  max-width:100%;
-  height:auto;
-}
+    margin:0;
+    padding:0;
+    width:40px;
+    max-width:100%;
+    height:auto;
+  }
 </style>
-<title>WAR!</title>
+<title>Irreconcilable Differences</title>
 <!--bootstrap minified css-->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <style>
@@ -33,7 +36,7 @@ canvas {background-color: black;}
 <script src='game.js' defer></script>
 </head>
 <body>
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
       <a class="navbar-brand" href="gamemain.php">
@@ -56,7 +59,7 @@ canvas {background-color: black;}
   </div>
 </nav>
 <div class='container'>
-<h2>WAR!</h2>
+<h2>Irreconcilable Differences: A game of browser domination</h2>
 <canvas id='field' width='1100' height='500'>You need to update your browser, bro</canvas><br>
 <?php echo "<button class='btn btn-lg btn-primary btn-block' onclick='initialize_game(\"$username\")'>Play!</button>"; ?>
 <p id='score' name='score' class='lead'>Your score: <b>0</b></p>
