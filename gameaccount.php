@@ -10,18 +10,6 @@ $username = $_SESSION['username'];
 ?>
 <html>
 <head>
-<link href="css/style.css" rel="stylesheet">
-<style>
-h1  {color:white; text-shadow: 0px 1px 4px black;}
-h2	{color:white; text-shadow: 0px 2px 4px black;}
-#SGicon {
-    margin:0;
-    padding:0;
-    width:40px;
-    max-width:100%;
-    height:auto;
-  }
-</style>
 <title><?php echo $username.": Account data" ?></title>
 <!--bootstrap minified css-->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
@@ -34,6 +22,19 @@ canvas {background-color: black;}
 <script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
 <!--external javascript-->
 <script src='game.js' defer></script>
+<link href="css/style.css" rel="stylesheet">
+<style>
+h1  {color:white; text-shadow: 0px 1px 4px black;}
+h2	{color:white; text-shadow: 0px 2px 4px black;}
+#SGicon {
+    margin:0;
+    padding:0;
+    width:40px;
+    max-width:100%;
+    height:auto;
+  }
+body {background-color:#999999;}
+</style>
 </head>
 <body>
 <nav class="navbar navbar-inverse">
@@ -64,8 +65,8 @@ $sql = "select score from accounts where username = '".$username."';";
 $resultset = mysql_query($sql)or die('Could not fetch user data '.mysql_error());
 while ($row = mysql_fetch_assoc($resultset))
 {
-  echo "<h2>".$username."</h2>";
-  echo "<p>Your total score: <b>".$row['score']."</b><p>";
+  echo "<h2><b>".$username."</b></h2>";
+  echo "<h4>Your total score: <b>".$row['score']."</b></h4>";
 }
 mysql_close($con);
 ?>

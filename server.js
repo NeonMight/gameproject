@@ -50,9 +50,12 @@ for(var i = 0; i < 51; i++)
 }
 var userCount = 0;
 var roomCount = 0;
-var app = require('http').createServer();
-var io = require('socket.io').listen(app);
-app.listen(3001);
+var express = require('express');
+var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+app.use(express.static(__dirname+'/'));
+
 console.log('Server listening on port 3001');
 
 //handler for connection
@@ -118,3 +121,7 @@ io.sockets.on('connection', function(socket)
   })
 }
 )
+
+http.listen(3001, function() {
+          console.log('listening on *:3001');
+});

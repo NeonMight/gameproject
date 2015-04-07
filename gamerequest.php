@@ -2,7 +2,7 @@
 $action = $_POST['action'];
 include 'gameconnect.php';
 $con = connect_to_db();
-if ($action = 'checkAvailUsers')
+if ($action == 'checkAvailUsers')
 {
   $text = $_POST['text'];
   $query = 'select username from accounts where username = "'.$text.'";';
@@ -11,9 +11,10 @@ if ($action = 'checkAvailUsers')
   echo $count;
 }
 
-else if ($action = 'updateScore')
+else if ($action == 'updateScore')
 {
   $username = $_POST['text'];
+  echo "Updating score...";
   $sql = 'select score from accounts where username= "'.$username.'";';
   $results = mysql_query($sql)or die('Error fetching score'.mysql_error());
   while($row = mysql_fetch_assoc($results))
@@ -21,7 +22,9 @@ else if ($action = 'updateScore')
     $score = $row['score'];
   }
   $score += 10;
-  $update = 'update accounts set score = '.$score.'where username = "'.$username.'";';
-  mysql_query($update)or die('Could not update score'.mysql_error());
+  //echo $score;
+  $update = "update accounts set score = ".$score." where username= '".$username."';";
+  //echo $update;
+  mysql_query($update)or die('Could not update score '.mysql_error());
 }
 ?>

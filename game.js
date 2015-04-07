@@ -58,7 +58,8 @@ function userAvail() //change event to onkeyup
   //alert('changed!');
   var request = getXMLHttpObject();
   var text = document.getElementById('user').value;
-  var params = "action=checkAvailUsers&text="+text+"&sid="+Math.random(); //all ajax will be sent with an action to gamerequest.php
+  var checkAvailUsers = 'checkAvailUsers';
+  var params = "action="+checkAvailUsers+"&text="+text+"&sid="+Math.random(); //all ajax will be sent with an action to gamerequest.php
   request.open('post','gamerequest.php',true);
   request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   request.send(params);
@@ -110,7 +111,7 @@ function initialize_game(usr)
         score += 10;
         scoreField.innerHTML = 'Your score: <b>'+score+'</b>';
       }
-      if (score >= 100)
+      if (score >= 10)
       {
         socket.emit('gameover',usr);
       }
@@ -120,10 +121,12 @@ function initialize_game(usr)
     alert('Game over! '+winner+' wins!');
     paper.project.clear();
     var request = getXMLHttpObject();
-    var params = 'action=updateScore&text='+winner+'&sid='+Math.random();
+    var updateScore = 'updateScore';
+    var params = 'action='+updateScore+'&text='+winner+'&sid='+Math.random();
     request.open('post','gamerequest.php',true);
     request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     request.send(params);
+    request.onreadystatechange = function() {};
   })
 }
 

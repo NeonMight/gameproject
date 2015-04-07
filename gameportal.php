@@ -27,27 +27,28 @@ h2	{color:white; text-shadow: 0px 2px 4px black;}
     max-width:100%;
     height:auto;
   }
+body {background-color:#999999;}
 </style>
 </head>
 <body>
- <div class="navbar navbar-inverse">
+<div class="navbar navbar-inverse">
 
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-    <a class="navbar-brand" href="index.html">
-          <img id="SGicon" alt="ASGG" src="http://104.130.213.200/img/icon.png">
-        </a>
-        <a class="navbar-brand" href="index.html">Awkward Seagull Games</a>
-      </div>
-      <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav navbar-right">
-        </ul>
-      </div><!--/.nav-collapse -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+<a class="navbar-brand" href="index.html">
+      <img id="SGicon" alt="ASGG" src="http://104.130.213.200/img/icon.png">
+    </a>
+    <a class="navbar-brand" href="index.html">Awkward Seagull Games</a>
   </div>
+  <div class="navbar-collapse collapse">
+    <ul class="nav navbar-nav navbar-right">
+    </ul>
+  </div><!--/.nav-collapse -->
+</div>
 
 <div class='container'>
 <div class='col-xs-6'>
@@ -63,7 +64,7 @@ if (!empty($_SESSION['account']))
   $_SESSION['account'] = '';
 }
 ?>
-<h1>Awkward Portal</h1>
+<h1><b>Awkward Portal</b></h1>
 <div class='form-group'>
 <h3>Log In</h3>
 <form method='post' action='gameverify.php' onsubmit='return validateLogin();'>
@@ -130,15 +131,6 @@ if (!empty($_SESSION['account']))
 </div>
 </div>
 
-<div id="footer">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-6 col-lg-offset-3">
-					<!--Copyright © 2014 - Bootstraptaste.com-->
-			</div>
-		</div>
-	</div>
-	</div>
 </body>
 </html>
 <?php
