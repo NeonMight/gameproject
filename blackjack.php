@@ -10,20 +10,16 @@ $username = $_SESSION['username'];
 ?>
 <html>
 <head>
-<title>Awkward Seagull Games: Irreconcilable Differences</title>
-<!--bootstrap minified css-->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<style>
-canvas {background-color: black;}
-</style>
-<!--jquery minified js-->
+<title>Awkward Seagull Games: Blackjack</title>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src='http://paperjs.org/assets/js/paper.js'></script>
 <script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
 <!--external javascript-->
-<script src='game.js' defer></script>
+<script src='blackjackclient.js'></script>
 <link href="css/style.css" rel="stylesheet">
 <style>
+canvas {background-color: black;}
 h1  {color:white; text-shadow: 0px 1px 4px black;}
 h2	{color:white; text-shadow: 0px 2px 4px black;}
 #SGicon {
@@ -51,7 +47,7 @@ body {background-color:#999999;}
     </ul>
 
     <ul class="nav navbar-nav">
-      <li><a href="#">Play Games</a></li>
+      <li><a href='gamemain.php'>Play War</a></li>
     </ul>
 
     <ul class="nav navbar-nav">
@@ -64,11 +60,11 @@ body {background-color:#999999;}
   </div>
 </nav>
 <div class='container'>
-<h2><b>Irreconcilable Differences: A game of browser domination</b></h2>
-<canvas id='field' width='1100' height='500'>You need to update your browser, bro</canvas><br>
-<?php echo "<button class='btn btn-lg btn-default btn-block' onclick='initialize_game(\"$username\")'>Play!</button>"; ?>
-<h4 id='score' name='score' class='lead'>Your score: <b>0</b></h4>
+<canvas id='can' width ='1100' height='500'>You are using a prehistoric browser</canvas>
+<?php echo "<button class='btn btn-default btn-block' onclick='setUpBlackJack(\"$username\")'>Play?</button>"?>
 </div>
-<?php mysql_close($con); ?>
 </body>
 </html>
+<?php
+mysql_close($con);
+?>

@@ -54,6 +54,10 @@ body {background-color:#999999;}
       <li><a href="gamemain.php">Play Games</a></li>
     </ul>
 
+    <ul class="nav navbar-nav">
+      <li><a href="blackjack.php">Play Blackjack</a></li>
+    </ul>
+
     <ul class="nav navbar-nav navbar-right">
       <li><a href="gamelogout.php">Logout</a></li>
     </ul>
