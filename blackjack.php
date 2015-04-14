@@ -63,6 +63,7 @@ body {background-image:url('http://104.130.213.200/img/main-bg.jpg');
   </div>
 </nav>
 <div class='container'>
+<h2><b>Blackjack</b></h2>
 <canvas id='can' width ='1100' height='500'>You are using a prehistoric browser</canvas>
 <?php echo "<button class='btn btn-default btn-block' onclick='setUpBlackJack(\"$username\")'>Play?</button>"?>
 </div>

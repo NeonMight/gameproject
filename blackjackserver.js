@@ -23,7 +23,7 @@ function shuffle(array)
 function createDeck()
 {
   var deck = [];
-  for (var i = 2; i < 15; i++)
+  for (var i = 2; i < 11; i++)
   {
     deck.push(i);
     deck.push(i);
@@ -37,6 +37,7 @@ function createDeck()
 var rooms = ['Lobby'];
 var decks = [];
 var usernames = {};
+var dealerCards = [];
 var winningUser = [];
 var winningHand = [];
 var roomCount = 0;
@@ -47,6 +48,7 @@ for (var i = 0; i < 50; i++) //imposes a limit for number of players
   winningHand.push(0);
   roomPopulation.push(0);
   decks.push(createDeck());
+  dealerCards.push([]);
 }
 var express = require('express');
 var app = express();
@@ -59,7 +61,7 @@ app.use(express.static(__dirname+'/'));
 //events will be adduser, disconnect, round,
 io.sockets.on('connection', function(socket)
 {
-  var hand = 0;
+  var hand = [];
   var seat = 0;
   socket.on('adduser',function(username)
   {
@@ -84,12 +86,25 @@ io.sockets.on('connection', function(socket)
     //dealer cards
     socket.emit('ready',username);
     seat = roomPopulation[socket.room];
+    dealerCards[socket.room].push(decks[socket.room].pop());
+    dealerCards[socket.room].push(decks[socket.room].pop()); //both cards are already drawn
   });
 
-  socket.on('init',function(usr)
+  socket.on('init',function(usr) //sets up initial game
   {
-    var card = decks[socket.room].pop();
-    socket.emit('dealer',{x: 150, y: 150, val: card});
+    var offset = 0
+    var position = 150 + (200 * seat);
+    var dealercard = dealerCards[socket.room][0];
+    io.sockets.in('room'+socket.room).emit('dealer',{x:500+offset, y:125, val:dealercard});
+    io.sockets.in('room'+socket.room).emit('dealer',{x:500+75, y:125, val:1});
+    for (var i = 0; i < 2;i++)
+    {
+      // store guest cards in another array and iterate to get existing user's cards
+      var guestcard = decks[socket.room].pop();
+      hand.push(guestcard);
+      io.sockets.in('room'+socket.room).emit('card',{x:position+offset, y:400, val:guestcard, user:usr});
+      offset += 75;
+    }
   })
 
   socket.on('disconnect',function()
