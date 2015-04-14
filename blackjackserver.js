@@ -37,9 +37,16 @@ function createDeck()
 var rooms = ['Lobby'];
 var decks = [];
 var usernames = {};
-var dealer = []; //each room will have a dealer (first person to connect). This stores usernames?
-var userCount = 0;
+var winningUser = [];
+var winningHand = [];
 var roomCount = 0;
+var roomPopulation = [];
+var capacity = 3;
+for (var i = 0; i < 50; i++)
+{
+  winningHand.push(0);
+  roomPopulation.push(0);
+}
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
@@ -48,33 +55,32 @@ app.use(express.static(__dirname+'/'));
 
 //handler for connection
 
+//events will be adduser, disconnect, round,
 io.sockets.on('connection', function(socket)
 {
-  socket.on('adduser',function(username)
+var hand = 0;
+socket.on('adduser',function(username)
   {
-    var role = '';
     socket.username = username;
     socket.room = 'Lobby';
     usernames[username] = username;
     socket.join('Lobby');
-    if(userCount%2 == 0)
+    //now join next available room
+    socket.leave('Lobby');
+    //console.log('Migrating user to new room...');
+    socket.room = roomCount;
+    socket.join('room'+socket.room);
+    console.log(username+' has been added to room # '+socket.room);
+    // check if another user is already in room
+    roomPopulation[socket.room] += 1;
+    //console.log('room '+socket.room+' seating is now at '+roomPopulation[socket.room])
+    if(roomPopulation[socket.room] >= capacity) //if room limit has been reached
     {
       rooms.push('room'+roomCount);
       roomCount++;
       var newdeck = createDeck();
       decks.push(newdeck);
-      role = 'dealer';
     }
-    else role = 'guest';
-    //now join next available room
-    socket.leave('Lobby');
-    //console.log('Migrating user to new room...');
-    socket.room = Math.floor(userCount/2);
-    userCount++;
-    socket.join('room'+socket.room);
-    console.log(username+' has been added to room # '+socket.room+' as the '+role);
-    socket.emit('role',role);
-    // check if another user is already in room
   });
   socket.on('disconnect',function()
   {

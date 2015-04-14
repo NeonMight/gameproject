@@ -16,7 +16,7 @@ $username = $_SESSION['username'];
 <script src='http://paperjs.org/assets/js/paper.js'></script>
 <script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
 <!--external javascript-->
-<script src='blackjackclient.js'></script>
+<script src='blackjackclient.js' defer></script>
 <link href="css/style.css" rel="stylesheet">
 <style>
 canvas {background-color: black;}
@@ -29,7 +29,10 @@ h2	{color:white; text-shadow: 0px 2px 4px black;}
     max-width:100%;
     height:auto;
   }
-body {background-color:#999999;}
+body {background-image:url('http://104.130.213.200/img/main-bg.jpg');
+      background-size:100% auto;
+      background-repeat: no-repeat;
+}
 </style>
 </head>
 <body>
