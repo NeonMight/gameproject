@@ -13,4 +13,22 @@ function setUpBlackJack(usr)
   background.position.x += 550;
   background.position.y += 0;
   //you should be able to see both of your cards and one of dealer's
+  socket.on('ready',function(u)
+  {
+    socket.emit('init',u);
+  });
+  socket.on('dealer',function(data)
+  {
+    renderCard(data.x,data.y,'DEALER',data.val); //user will have different x position depending on their seat in the room
+  });
+}
+
+function renderCard(x,y,usr,val)
+{
+  var card = new paper.Raster();
+  card.source = 'http://104.130.213.200/img/card'+val+'.png';
+  card.position.x = x;
+  card.position.y = y;
+  card.data = usr;
+  card.scale(0.25);
 }

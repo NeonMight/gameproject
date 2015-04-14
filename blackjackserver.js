@@ -42,10 +42,11 @@ var winningHand = [];
 var roomCount = 0;
 var roomPopulation = [];
 var capacity = 3;
-for (var i = 0; i < 50; i++)
+for (var i = 0; i < 50; i++) //imposes a limit for number of players
 {
   winningHand.push(0);
   roomPopulation.push(0);
+  decks.push(createDeck());
 }
 var express = require('express');
 var app = express();
@@ -58,8 +59,9 @@ app.use(express.static(__dirname+'/'));
 //events will be adduser, disconnect, round,
 io.sockets.on('connection', function(socket)
 {
-var hand = 0;
-socket.on('adduser',function(username)
+  var hand = 0;
+  var seat = 0;
+  socket.on('adduser',function(username)
   {
     socket.username = username;
     socket.room = 'Lobby';
@@ -78,10 +80,18 @@ socket.on('adduser',function(username)
     {
       rooms.push('room'+roomCount);
       roomCount++;
-      var newdeck = createDeck();
-      decks.push(newdeck);
     }
+    //dealer cards
+    socket.emit('ready',username);
+    seat = roomPopulation[socket.room];
   });
+
+  socket.on('init',function(usr)
+  {
+    var card = decks[socket.room].pop();
+    socket.emit('dealer',{x: 150, y: 150, val: card});
+  })
+
   socket.on('disconnect',function()
   {
     delete usernames[socket.username];
