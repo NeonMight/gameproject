@@ -105,12 +105,23 @@ io.sockets.on('connection', function(socket)
       io.sockets.in('room'+socket.room).emit('card',{x:position+offset, y:400, val:guestcard, user:usr});
       offset += 75;
     }
+    var total = 0;
+    for (var i = 0; i < hand.length; i++)
+    {
+      total += hand[i];
+    }
+    console.log(usr+' has a hand of '+total);
+    if (roomPopulation[socket.room] >= 2)
+    {
+      io.sockets.in('room'+socket.room).emit('turn', 'test'); //the first user
+    }
   })
 
   socket.on('disconnect',function()
   {
+    io.sockets.in('room'+socket.room).emit('left',socket.username);
     delete usernames[socket.username];
-    socket.leave(socket.room);
+    socket.leave('room'+socket.room);
     console.log( socket.username+' has left.');
   })
 }

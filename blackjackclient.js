@@ -1,3 +1,6 @@
+// turn event will pass a username, which will add a click event to the canvas if usernames match
+// turn will iterate through the available users and send back the next user
+// hitme will be a event listener on dblclick that will send the username to the server
 function setUpBlackJack(usr)
 {
   var canv = document.getElementById('can');
@@ -25,6 +28,30 @@ function setUpBlackJack(usr)
   {
     renderCard(data.x,data.y,data.user,data.val);
   });
+  socket.on('turn',function(who)
+  {
+    alert(who+'\'s turn');
+    if (usr == who)
+    {
+      //add event listeners
+      canv.ondblclick = function(){alert('hit me!');};
+      document.onkeydown = function(event)
+      {
+        if (event.keyCode == 32) alert('pass');
+        console.log('user pressed a key');
+      };
+    }
+    else
+    {
+      //remove listeners
+      canv.ondblclick = '';
+      document.onkeydown = '';
+    }
+  })
+  socket.on('left',function(user)
+  {
+    alert(user+' has ragequit.');
+  })
 }
 
 function renderCard(x,y,usr,val)
