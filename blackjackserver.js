@@ -105,9 +105,8 @@ io.sockets.on('connection', function(socket)
   {
     var offset = 0
     var position = 60 + (175 * seat);
-    var dealercard = dealerCards[socket.room][0];
-    io.sockets.in('room'+socket.room).emit('dealer',{x:350+offset, y:125, val:dealercard});
-    io.sockets.in('room'+socket.room).emit('dealer',{x:350+75, y:125, val:1});
+    io.sockets.in('room'+socket.room).emit('dealer',{x:350+offset, y:125, val:dealerCards[socket.room][0]});
+    io.sockets.in('room'+socket.room).emit('dealer',{x:350+75, y:125, val:dealerCards[socket.room][1]});
     for (var i = 0; i < 2;i++)
     {
       // store guest cards in another array and iterate to get existing user's cards
@@ -141,12 +140,16 @@ io.sockets.on('connection', function(socket)
     console.log('Users in room '+socket.room+'are now '+inRoom[socket.room]);
     console.log('Shifted user is '+totheback);
     inRoom[socket.room].push(totheback);
+    // if hand is greater than highest value, then set highest value and winning username for room
     io.sockets.in('room'+socket.room).emit('turn',inRoom[socket.room][0]); //next user
   });
 
   socket.on('roundover',function()
   {
     //send init message again in this one and reset deck (decks[socket.room] = createDeck())
+    //socket.send('winner',) //send whoever winner is
+    //setTimeout(function(){},3000);  send clear canvas signal
+    //setTimeout(function(){},6000);  send re-initialized game state signal
   });
 
   socket.on('disconnect',function()

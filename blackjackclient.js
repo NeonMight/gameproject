@@ -15,6 +15,17 @@ function setUpBlackJack(usr)
   chatbox = document.getElementById('chat-output');
   //you should be able to see both of your cards and one of dealer's
   var socket = io.connect('http://localhost:3002');
+  //set up chat
+  var input = document.getElementById('chat-input');
+  input.onkeydown = function(ev)
+  {
+    if (ev.keyCode == 13)
+    {
+      socket.emit('message',{username:usr, message:input.value});
+      input.value = '';
+    }
+  }
+  //end chat setup
   socket.on('connect',function() {
     socket.emit('adduser',usr);
   });
