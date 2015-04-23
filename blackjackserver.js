@@ -43,7 +43,7 @@ var winningHand = []; //current high hand for each room
 var inRoom = [];
 var roomCount = 0;
 var roomPopulation = [];
-var capacity = 3;
+var capacity = 2;
 for (var i = 0; i < 50; i++) //imposes a limit for number of players
 {
   winningHand.push(0);
@@ -84,8 +84,10 @@ io.sockets.on('connection', function(socket)
     if(roomPopulation[socket.room] >= capacity) //if room limit has been reached
     {
       rooms.push('room'+roomCount);
+      inRoom[socket.room].push("dealer"); //now push dealer
       roomCount++;
     }
+    console.log("Users in room"+socket.room+" are "+inRoom[socket.room]);
     //dealer cards
     socket.emit('ready',username);
     seat = roomPopulation[socket.room];
@@ -102,7 +104,7 @@ io.sockets.on('connection', function(socket)
   socket.on('init',function(usr) //sets up initial game
   {
     var offset = 0
-    var position = 100 + (175 * seat);
+    var position = 60 + (175 * seat);
     var dealercard = dealerCards[socket.room][0];
     io.sockets.in('room'+socket.room).emit('dealer',{x:350+offset, y:125, val:dealercard});
     io.sockets.in('room'+socket.room).emit('dealer',{x:350+75, y:125, val:1});
@@ -134,9 +136,17 @@ io.sockets.on('connection', function(socket)
 
   socket.on('pass',function(usr)
   {
-    //if the next user is dealer, then calculate tally
     //else, send turn next user in room
+    var totheback = inRoom[socket.room].shift(); //move front user, who just went, to the back of the line
+    console.log('Users in room '+socket.room+'are now '+inRoom[socket.room]);
+    console.log('Shifted user is '+totheback);
+    inRoom[socket.room].push(totheback);
+    io.sockets.in('room'+socket.room).emit('turn',inRoom[socket.room][0]); //next user
+  });
 
+  socket.on('roundover',function()
+  {
+    //send init message again in this one and reset deck (decks[socket.room] = createDeck())
   });
 
   socket.on('disconnect',function()
@@ -145,7 +155,7 @@ io.sockets.on('connection', function(socket)
     delete usernames[socket.username];
     socket.leave('room'+socket.room);
     console.log( socket.username+' has left.');
-  })
+  });
 }
 );
 

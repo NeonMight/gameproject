@@ -7,11 +7,6 @@ function validateLogin()
     alert('Make sure all fields are filled in before continuing');
     return false;
   }
-  if (u == 'dealer' || u == 'Dealer' || u == 'DEALER' || u == 'server' || u == 'SERVER' || u == 'Server')
-  {
-    alert('You can\'t have that username!!!');
-    return false;
-  }
 }
 
 function validateRegister()
@@ -34,6 +29,11 @@ function validateRegister()
   if (uclass == 'form-group has-error')
   {
     alert('Username '+u+' already exists.');
+    return false;
+  }
+  if (u == 'dealer' || u == 'Dealer' || u == 'DEALER' || u == 'server' || u == 'SERVER' || u == 'Server')
+  {
+    alert('You can\'t have that username!!!');
     return false;
   }
 }

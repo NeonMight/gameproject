@@ -7,6 +7,8 @@ function setUpBlackJack(usr)
   paper.setup(canv);
   var background = new paper.Raster();
   background.source = 'http://web.stanford.edu/~jlewis8/cs148/pokerscene/textures/perlinfelt1.jpg';
+  //http://104.130.213.200/img/main-bg.jpg
+  //http://web.stanford.edu/~jlewis8/cs148/pokerscene/textures/perlinfelt1.jpg
   background.scale(1.1);
   background.position.x += 550;
   background.position.y += 0;
@@ -19,7 +21,7 @@ function setUpBlackJack(usr)
 
   socket.on('chat',function(data) //handle chatbox for all players
   {
-    chatbox.innerHTML += "<br><div class='chat-area' id=''>"+data.username+": "+data.message+"</div>";
+    chatbox.innerHTML += "<h5 id=''><b>"+data.username+"</b>: "+data.message+"</h5>";
   });
 
   socket.on('ready',function(u)
@@ -28,7 +30,7 @@ function setUpBlackJack(usr)
   });
   socket.on('dealer',function(data)
   {
-    renderCard(data.x,data.y,'DEALER',data.val); //user will have different x position depending on their seat in the room
+    renderCard(data.x,data.y,'dealer',data.val); //user will have different x position depending on their seat in the room
   });
   socket.on('card',function(data)
   {
@@ -43,8 +45,8 @@ function setUpBlackJack(usr)
       canv.ondblclick = function(){alert('hit me!');};
       document.onkeydown = function(event)
       {
-        if (event.keyCode == 32) alert('pass');
-        console.log('user pressed a key');
+        if (event.keyCode == 32) socket.emit('pass',who);
+        //console.log('user pressed a key');
       };
     }
     else
@@ -53,10 +55,12 @@ function setUpBlackJack(usr)
       canv.ondblclick = '';
       document.onkeydown = '';
     }
-  })
+    if (usr == 'dealer') socket.emit('roundover');
+  });
+
   socket.on('left',function(user)
   {
-    alert(user+' has quit.');
+    alert(user+' has left.');
   })
 }
 

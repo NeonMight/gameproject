@@ -26,6 +26,7 @@ canvas {background-color: black;}
 <style>
 h1  {color:white; text-shadow: 0px 1px 4px black;}
 h2	{color:white; text-shadow: 0px 2px 4px black;}
+h6 {color:black;}
 #SGicon {
     margin:0;
     padding:0;

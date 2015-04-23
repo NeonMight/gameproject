@@ -23,8 +23,6 @@ canvas {background-color: black;}
 h1  {color:white; text-shadow: 0px 1px 4px black;}
 h2	{color:white; text-shadow: 0px 2px 4px black;}
 h3	{color:white; text-shadow: 0px 2px 4px black;}
-h4	{color:white; text-shadow: 0px 2px 4px black;}
-h5	{color:white; text-shadow: 0px 2px 4px black;}
 #SGicon {
     margin:0;
     padding:0;
@@ -32,7 +30,7 @@ h5	{color:white; text-shadow: 0px 2px 4px black;}
     max-width:100%;
     height:auto;
   }
-body {background-image:url('http://104.130.213.200/img/main-bg.jpg');
+body {background-color:#999999;;
       background-size:100% auto;
       background-repeat: no-repeat;
 }
