@@ -10,15 +10,21 @@ function setUpBlackJack(usr)
   background.scale(1.1);
   background.position.x += 550;
   background.position.y += 0;
+  chatbox = document.getElementById('chat-output');
   //you should be able to see both of your cards and one of dealer's
   var socket = io.connect('http://localhost:3002');
   socket.on('connect',function() {
     socket.emit('adduser',usr);
   });
+
+  socket.on('chat',function(data) //handle chatbox for all players
+  {
+    chatbox.innerHTML += "<br><div class='chat-area' id=''>"+data.username+": "+data.message+"</div>";
+  });
+
   socket.on('ready',function(u)
   {
     socket.emit('init',u);
-    //render player username here
   });
   socket.on('dealer',function(data)
   {
@@ -50,7 +56,7 @@ function setUpBlackJack(usr)
   })
   socket.on('left',function(user)
   {
-    alert(user+' has ragequit.');
+    alert(user+' has quit.');
   })
 }
 
@@ -61,5 +67,5 @@ function renderCard(x,y,usr,val)
   card.position.x = x;
   card.position.y = y;
   card.data = usr;
-  card.scale(0.25);
+  card.scale(0.21);
 }

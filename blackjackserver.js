@@ -38,8 +38,9 @@ var rooms = ['Lobby'];
 var decks = [];
 var usernames = {};
 var dealerCards = [];
-var winningUser = [];
-var winningHand = [];
+var winningUser = [];  // current winning user for each room
+var winningHand = []; //current high hand for each room
+var inRoom = [];
 var roomCount = 0;
 var roomPopulation = [];
 var capacity = 3;
@@ -49,6 +50,7 @@ for (var i = 0; i < 50; i++) //imposes a limit for number of players
   roomPopulation.push(0);
   decks.push(createDeck());
   dealerCards.push([]);
+  inRoom.push([]);
 }
 var express = require('express');
 var app = express();
@@ -58,12 +60,12 @@ app.use(express.static(__dirname+'/'));
 
 //handler for connection
 
-//events will be adduser, disconnect, round,
+//events will be adduser, disconnect, turn, hitme, pass
 io.sockets.on('connection', function(socket)
 {
   var hand = [];
   var seat = 0;
-  socket.on('adduser',function(username)
+  socket.on('adduser',function(username) //when a new user connects, welcome that user and send them the how to play message
   {
     socket.username = username;
     socket.room = 'Lobby';
@@ -74,6 +76,7 @@ io.sockets.on('connection', function(socket)
     //console.log('Migrating user to new room...');
     socket.room = roomCount;
     socket.join('room'+socket.room);
+    inRoom[socket.room].push(username); //put username into the room data
     console.log(username+' has been added to room # '+socket.room);
     // check if another user is already in room
     roomPopulation[socket.room] += 1;
@@ -88,15 +91,21 @@ io.sockets.on('connection', function(socket)
     seat = roomPopulation[socket.room];
     dealerCards[socket.room].push(decks[socket.room].pop());
     dealerCards[socket.room].push(decks[socket.room].pop()); //both cards are already drawn
+    socket.emit('chat',{username:"Server", message:'Welcome! To hit, double click canvas! To stay, press spacebar!'})
+  });
+
+  socket.on('message',function(data)
+  {
+    io.sockets.in('room'+socket.room).emit('chat',{username:data.username, message:data.message})
   });
 
   socket.on('init',function(usr) //sets up initial game
   {
     var offset = 0
-    var position = 150 + (200 * seat);
+    var position = 100 + (175 * seat);
     var dealercard = dealerCards[socket.room][0];
-    io.sockets.in('room'+socket.room).emit('dealer',{x:500+offset, y:125, val:dealercard});
-    io.sockets.in('room'+socket.room).emit('dealer',{x:500+75, y:125, val:1});
+    io.sockets.in('room'+socket.room).emit('dealer',{x:350+offset, y:125, val:dealercard});
+    io.sockets.in('room'+socket.room).emit('dealer',{x:350+75, y:125, val:1});
     for (var i = 0; i < 2;i++)
     {
       // store guest cards in another array and iterate to get existing user's cards
@@ -113,9 +122,22 @@ io.sockets.on('connection', function(socket)
     console.log(usr+' has a hand of '+total);
     if (roomPopulation[socket.room] >= 2)
     {
-      io.sockets.in('room'+socket.room).emit('turn', 'test'); //the first user
+      io.sockets.in('room'+socket.room).emit('turn', inRoom[socket.room][0]); //the first user in room
     }
-  })
+  });
+
+  socket.on('hitme',function(usr)
+  {
+    //if hand is greater than 21, then bust and send removeplayercards then turn next user in room
+
+  });
+
+  socket.on('pass',function(usr)
+  {
+    //if the next user is dealer, then calculate tally
+    //else, send turn next user in room
+
+  });
 
   socket.on('disconnect',function()
   {
@@ -125,7 +147,7 @@ io.sockets.on('connection', function(socket)
     console.log( socket.username+' has left.');
   })
 }
-)
+);
 
 http.listen(3002, function() {
           console.log('listening on *:3002');
