@@ -1,10 +1,8 @@
 // turn event will pass a username, which will add a click event to the canvas if usernames match
 // turn will iterate through the available users and send back the next user
 // hitme will be a event listener on dblclick that will send the username to the server
-function setUpBlackJack(usr)
+function renderBackground()
 {
-  var canv = document.getElementById('can');
-  paper.setup(canv);
   var background = new paper.Raster();
   background.source = 'http://web.stanford.edu/~jlewis8/cs148/pokerscene/textures/perlinfelt1.jpg';
   //http://104.130.213.200/img/main-bg.jpg
@@ -12,6 +10,14 @@ function setUpBlackJack(usr)
   background.scale(1.1);
   background.position.x += 550;
   background.position.y += 0;
+}
+
+function setUpBlackJack(usr)
+{
+  var canv = document.getElementById('can');
+  paper.setup(canv);
+  renderBackground();
+  document.getElementById('chat-status').innerHTML = "Connected";
   chatbox = document.getElementById('chat-output');
   //you should be able to see both of your cards and one of dealer's
   var socket = io.connect('http://localhost:3002');
@@ -66,13 +72,20 @@ function setUpBlackJack(usr)
       canv.ondblclick = '';
       document.onkeydown = '';
     }
-    if (usr == 'dealer') socket.emit('roundover');
+    if (usr == 'dealer') socket.emit('roundover','stuff');
+  });
+
+  socket.on('winner',function(who)
+  {
+    alert(who+' wins!');
+    setTimeout(function(){paper.project.clear();},2000);
+    renderBackground();
   });
 
   socket.on('left',function(user)
   {
     alert(user+' has left.');
-  })
+  });
 }
 
 function renderCard(x,y,usr,val)

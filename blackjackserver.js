@@ -34,6 +34,19 @@ function createDeck()
   return deck;
 }
 
+function break(array) //check if array is over 21
+{
+  var total = 0;
+  for(var a; a < array.length; a++)
+  {
+    total += array[a];
+  }
+  if (total > 21)
+  {
+    //
+  }
+}
+
 var rooms = ['Lobby'];
 var decks = [];
 var usernames = {};
@@ -119,11 +132,11 @@ io.sockets.on('connection', function(socket)
       var name = inRoom[socket.room][i] // use i to index into players array
       for (var j = 0; j < userCards[name].length; j++) //for each card
       {
-        io.sockets.in('room'+socket.room).emit('card', {x:position+offset/*won't work yet; needs tweaking*/, y:400, val:userCards[name][j], user:name}); // send each card for this user
+        io.sockets.in('room'+socket.room).emit('card', {x:position+offset/*player offset + card offset*/, y:400, val:userCards[name][j], user:name}); // send each card for this user
         offset += 50; //increment CARD offset for this player
       }
       // NOW, increment the PLAYER offset here
-      position += 175; //will this work???
+      position += 225; //will this work???
       offset = 0;
     }
     if (roomPopulation[socket.room] >= 2)
@@ -142,8 +155,6 @@ io.sockets.on('connection', function(socket)
   {
     //else, send turn next user in room
     var totheback = inRoom[socket.room].shift(); //move front user, who just went, to the back of the line
-    console.log('Users in room '+socket.room+'are now '+inRoom[socket.room]);
-    console.log('Shifted user is '+totheback);
     inRoom[socket.room].push(totheback);
     // if hand is greater than highest value, then set highest value and winning username for room
     io.sockets.in('room'+socket.room).emit('turn',inRoom[socket.room][0]); //next user
@@ -152,9 +163,9 @@ io.sockets.on('connection', function(socket)
   socket.on('roundover',function()
   {
     //send init message again in this one and reset deck (decks[socket.room] = createDeck())
-    //socket.send('winner',) //send whoever winner is
-    //setTimeout(function(){},3000);  send clear canvas signal
+    //socket.send('winner',) //send whoever winner is and clear canvas
     //setTimeout(function(){},6000);  send re-initialized game state signal
+    console.log('Round over.');
   });
 
   socket.on('disconnect',function()

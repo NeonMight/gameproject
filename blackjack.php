@@ -157,6 +157,7 @@ the layers are:
 <div class=''>
 <div class='col-xs-2'>
 <!-- right sidebar -->
+<br><br><br>
 <div class="bubble-outer" id="chat-window">
 	<div class="bubble-inner">
 		<div class="bubble-title-bar bubble-draggable" id="chat-titlebar">
@@ -167,18 +168,19 @@ the layers are:
 		<div id="playersbox">
 		</div>
 		<div class="chat-area" id="chat-output">
-			<div>Welcome!</div>
+			<div id='chat-status'>Offline</div>
 		</div>
 		<textarea class="chat-area" id="chat-input" rows="1"></textarea>
 	</div>
 </div>
 </div>
 
-<div class='col-xs-2'>
+<div class='col-xs-1'>
 </div>
+
 <div class='col-xs-8'>
 <h2><b>Blackjack</b></h2>
-<canvas id='can' width='800', height='500'>You are using a prehistoric browser</canvas>
+<canvas id='can' width='850', height='500'>You are using a prehistoric browser</canvas>
 <?php echo "<button class='btn btn-default btn-block' onclick='setUpBlackJack(\"$username\")'>Play</button>"?>
 </div>
 </div>
