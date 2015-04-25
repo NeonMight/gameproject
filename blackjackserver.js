@@ -156,9 +156,15 @@ io.sockets.on('connection', function(socket)
     //if hand is greater than 21, then bust and send bust, then emit turn next user in room
     var newcard = decks[socket.room].pop();
     userCards[usr].push(newcard);
-    io.sockets.in('room'+socket.room).emit("card",{x:300, y:300,val:newcard,user:usr});
+    io.sockets.in('room'+socket.room).emit("card",{x:300, y:300,val:newcard,user:usr}); //RE RENDER OLD CARDS WITH SAME LOOP AS INIT
     var total = bust(userCards[usr]);
-    if (total == -1) socket.emit("bust",usr);
+    if (total == -1)
+      {
+        socket.emit("bust",usr);
+        var totheback = inRoom[socket.room].shift(); //move front user, who just went, to the back of the line
+        inRoom[socket.room].push(totheback);
+        setTimeout(function(){socket.emit('turn'),socket.room[0]},3000);
+      }
   });
 
   socket.on('pass',function(usr)

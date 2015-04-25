@@ -45,7 +45,7 @@ function setUpBlackJack(usr)
   {
     socket.emit('init',u);
   });
-  socket.on("bust",function(usr){alert(usr+ " busted!");});
+  socket.on("bust",function(usr){alert(usr+ " busted!");}); //handle if user > 21
   socket.on('dealer',function(data)
   {
     renderCard(data.x,data.y,'dealer',data.val); //user will have different x position depending on their seat in the room
@@ -73,7 +73,7 @@ function setUpBlackJack(usr)
       canv.ondblclick = '';
       document.onkeydown = '';
     }
-    if (usr == 'dealer') socket.emit('roundover','stuff');
+    if (who == 'dealer') socket.emit('roundover','stuff');
   });
 
   socket.on('winner',function(who)
