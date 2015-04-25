@@ -34,17 +34,22 @@ function createDeck()
   return deck;
 }
 
-function break(array) //check if array is over 21
+function bust(array) //check if array is over 21
 {
   var total = 0;
-  for(var a; a < array.length; a++)
+  for(var a = 0; a < array.length; a++)
   {
     total += array[a];
   }
-  if (total > 21)
+  var contains11 = array.indexOf(11);
+  while (total > 21 && contains11 > -1)
   {
-    //
+    array[contains11] -= 10;
+    total -= 10;
+    contains11 = array.indexOf(11);
   }
+  if (total > 21) total = -1 //player bust
+  return total;
 }
 
 var rooms = ['Lobby'];
@@ -147,8 +152,13 @@ io.sockets.on('connection', function(socket)
 
   socket.on('hitme',function(usr)
   {
-    //if hand is greater than 21, then bust and send removeplayercards then turn next user in room
-
+    //give the user another card; how to save LOCATION?!
+    //if hand is greater than 21, then bust and send bust, then emit turn next user in room
+    var newcard = decks[socket.room].pop();
+    userCards[usr].push(newcard);
+    io.sockets.in('room'+socket.room).emit("card",{x:300, y:300,val:newcard,user:usr});
+    var total = bust(userCards[usr]);
+    if (total == -1) socket.emit("bust",usr);
   });
 
   socket.on('pass',function(usr)

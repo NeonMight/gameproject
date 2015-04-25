@@ -45,13 +45,14 @@ function setUpBlackJack(usr)
   {
     socket.emit('init',u);
   });
+  socket.on("bust",function(usr){alert(usr+ " busted!");});
   socket.on('dealer',function(data)
   {
     renderCard(data.x,data.y,'dealer',data.val); //user will have different x position depending on their seat in the room
   });
   socket.on('card',function(data)
   {
-    renderCard(data.x,data.y,data.user,data.val);
+    renderCard(data.x,data.y,data.user,data.val,socket);
   });
   socket.on('turn',function(who)
   {
@@ -59,7 +60,7 @@ function setUpBlackJack(usr)
     if (usr == who)
     {
       //add event listeners
-      canv.ondblclick = function(){alert('hit me!');};
+      canv.ondblclick = function(){socket.emit('hitme',who)};
       document.onkeydown = function(event)
       {
         if (event.keyCode == 32) socket.emit('pass',who);
@@ -88,7 +89,7 @@ function setUpBlackJack(usr)
   });
 }
 
-function renderCard(x,y,usr,val)
+function renderCard(x,y,usr,val,s)
 {
   var card = new paper.Raster();
   card.source = 'http://104.130.213.200/img/card'+val+'.png';
