@@ -54,6 +54,12 @@ function setUpBlackJack(usr)
   {
     renderCard(data.x,data.y,data.user,data.val,socket);
   });
+
+  socket.on('nametag',function(data)
+  {
+    renderNameplate(data.x,data.y,data.user)
+  })
+
   socket.on('turn',function(who)
   {
     alert(who+'\'s turn');
@@ -97,4 +103,12 @@ function renderCard(x,y,usr,val,s)
   card.position.y = y;
   card.data = usr;
   card.scale(0.21);
+}
+
+function renderNameplate(x,y,name)
+{
+  var nameplate = new paper.PointText(new paper.Point(x,y));
+  nameplate.content = name;
+  nameplate.fillColor = 'white';
+  nameplate.fontSize = 20;
 }
