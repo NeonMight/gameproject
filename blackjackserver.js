@@ -62,6 +62,7 @@ var winningHand = []; //current high hand for each room
 var inRoom = [];
 var roomCount = 0;
 var roomPopulation = [];
+var userOffset = {}; //set to their initial connection order
 var capacity = 2;
 for (var i = 0; i < 50; i++) //imposes a limit for number of players
 {
@@ -97,7 +98,8 @@ io.sockets.on('connection', function(socket)
     socket.join('room'+socket.room);
     inRoom[socket.room].push(username); //put username into the room data
     console.log(username+' has been added to room # '+socket.room);
-    // check if another user is already in room
+    //set appropriate offset for user
+    userOffset[username] = roomPopulation[socket.room];
     roomPopulation[socket.room] += 1;
     //console.log('room '+socket.room+' seating is now at '+roomPopulation[socket.room])
     if(roomPopulation[socket.room] >= capacity) //if room limit has been reached
@@ -154,29 +156,15 @@ io.sockets.on('connection', function(socket)
 
   socket.on('hitme',function(usr)
   {
-    //give the user another card; how to save LOCATION?! Render cards AGAIN!!!
     //if hand is greater than 21, then bust and send bust, then emit turn next user in room
     var newcard = decks[socket.room].pop();
     userCards[usr].push(newcard);
     //io.sockets.in('room'+socket.room).emit("card",{x:300, y:300,val:newcard,user:usr}); //RE RENDER OLD CARDS WITH SAME LOOP AS INIT
+    //CHANGE THIS LOOP SO ONLY ONE USER GETS RENDERED ACCORDING TO THEIR OFFSET!!!!
+    //send render data
+    var pos = 175 + (100*userOffset[usr]);
+    io.sockets.in('room'+socket.room).emit('card',{x:pos, y:380, val:newcard, user:usr});
 
-    var offset = 0;
-    var position = 100;
-    for (var i = 0; i < inRoom[socket.room].length; i++) //for each user minus the server
-    {
-      var name = inRoom[socket.room][i] // use i to index into players array
-      console.log('Getting cards for '+name+'...'); //dont get cards for dealer
-      if (name != 'dealer')
-      {
-        for (var j = 0; j < userCards[name].length; j++) //for each card
-        {
-          io.sockets.in('room'+socket.room).emit('card', {x:position+offset/*player offset + card offset*/, y:400, val:userCards[name][j], user:name}); // send each card for this user
-          offset += 50; //increment CARD offset for this player
-        }
-      position += 225;
-      offset = 0;
-      }
-    }
 
     console.log('Rendered');
 
@@ -223,6 +211,11 @@ io.sockets.on('connection', function(socket)
   socket.on('disconnect',function()
   {
     io.sockets.in('room'+socket.room).emit('left',socket.username);
+    //remove from inroom too
+    for (var i = 0; i < inRoom[socket.room].length; i++)
+    {
+      if (inRoom[socket.room][i] == socket.username) inRoom[socket.room].splice(i,1); //remove user from inRoom
+    }
     delete usernames[socket.username];
     socket.leave('room'+socket.room);
     console.log( socket.username+' has left.');
