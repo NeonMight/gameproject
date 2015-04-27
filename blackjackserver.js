@@ -39,7 +39,8 @@ function bust(array) //check if array is over 21
   var total = 0;
   for(var a = 0; a < array.length; a++)
   {
-    total += array[a];
+    if (array[a] > 11) total += 10; //if jack, queen, or king, value is 10
+    else total += array[a]; //if 2 thru ace (card2 - card11)
   }
   var contains11 = array.indexOf(11);
   while (total > 21 && contains11 > -1)
@@ -125,6 +126,7 @@ io.sockets.on('connection', function(socket)
   {
     var offset = 0
     var position = 100; // THIS is what you need to edit to figure out proper offset leves
+
     io.sockets.in('room'+socket.room).emit('dealer',{x:350+offset, y:125, val:dealerCards[socket.room][0]});
     io.sockets.in('room'+socket.room).emit('dealer',{x:350+50, y:125, val:dealerCards[socket.room][1]});
     userCards[usr] = [];
@@ -162,8 +164,8 @@ io.sockets.on('connection', function(socket)
     //io.sockets.in('room'+socket.room).emit("card",{x:300, y:300,val:newcard,user:usr}); //RE RENDER OLD CARDS WITH SAME LOOP AS INIT
     //CHANGE THIS LOOP SO ONLY ONE USER GETS RENDERED ACCORDING TO THEIR OFFSET!!!!
     //send render data
-    var pos = 175 + (100*userOffset[usr]);
-    io.sockets.in('room'+socket.room).emit('card',{x:pos, y:380, val:newcard, user:usr});
+    var pos = 175 + (200*userOffset[usr]);
+    io.sockets.in('room'+socket.room).emit('card',{x:pos, y:380-(Math.random()*25), val:newcard, user:usr});
 
 
     console.log('Rendered');
