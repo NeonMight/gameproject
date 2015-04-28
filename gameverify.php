@@ -14,7 +14,7 @@ mysql_close($con);
 if ($count >= 1)
 {
   $_SESSION['username'] = $username;
-  header('location:gamemain.php');
+  header('location:gamemenu.php');
 }
 else
 {

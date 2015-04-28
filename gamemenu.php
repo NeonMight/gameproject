@@ -10,7 +10,7 @@ $username = $_SESSION['username'];
 ?>
 <html>
 <head>
-<title>Awkward Seagull Games: Irreconcilable Differences</title>
+<title>Awkward Seagull Games: Games Menu</title>
 <!--bootstrap minified css-->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <style>
@@ -35,6 +35,7 @@ h6 {color:black;}
     height:auto;
   }
 body {background-color:#999999;}
+.panel {background-color:#777777;}
 </style>
 </head>
 <body>
@@ -52,7 +53,7 @@ body {background-color:#999999;}
     </ul>
 
     <ul class="nav navbar-nav">
-      <li><a href="gamemenu.php">Play Games</a></li>
+      <li><a href="#">Play Games</a></li>
     </ul>
 
     <ul class="nav navbar-nav">
@@ -65,11 +66,25 @@ body {background-color:#999999;}
   </div>
 </nav>
 <div class='container'>
-<h2><b>Irreconcilable Differences: A game of browser domination</b></h2>
-<canvas id='field' width='1100' height='500'>You need to update your browser, bro</canvas><br>
-<?php echo "<button class='btn btn-lg btn-default btn-block' onclick='initialize_game(\"$username\")'>Play!</button>"; ?>
-<h4 id='score' name='score' class='lead'>Your score: <b>0</b></h4>
+<div class='col-xs-3'>
 </div>
-<?php mysql_close($con); ?>
+<div class='col-xs-6'>
+<div class='panel panel-default' align='center'>
+<h4><a href='gamemain.php'>Play Irreconcilable Differences</a></h4>
+<h4>Screenshots coming soon</h4>
+</div>
+
+<div class='panel panel-default' align='center'>
+<h4><a href='blackjack.php'>Play Blackjack: Standard Edition</a></h4>
+<h4>Screenshots coming soon</h4>
+</div>
+
+<div class='panel panel-default' align='center'>
+<h4><a>Play Blackjack: World Championship Edition(Coming Soon!)</a></h4>
+<h4>Screenshots coming soon</h4>
+</div>
+</div>
+
+</div>
 </body>
 </html>

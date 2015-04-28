@@ -142,7 +142,7 @@ the layers are:
     </ul>
 
     <ul class="nav navbar-nav">
-      <li><a href='gamemain.php'>Play War</a></li>
+      <li><a href='gamemenu.php'>Play Games</a></li>
     </ul>
 
     <ul class="nav navbar-nav">
@@ -179,7 +179,7 @@ the layers are:
 </div>
 
 <div class='col-xs-8'>
-<h2><b>Blackjack</b></h2>
+<h2><b>Blackjack: Standard Edition</b></h2>
 <canvas id='can' width='850', height='500'>You are using a prehistoric browser</canvas>
 <?php echo "<button class='btn btn-default btn-block' onclick='setUpBlackJack(\"$username\")'>Play</button>"?>
 </div>
