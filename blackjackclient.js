@@ -85,8 +85,7 @@ function setUpBlackJack(usr)
   socket.on('winner',function(who)
   {
     alert(who+' wins!');
-    setTimeout(function(){paper.project.clear();},2000);
-    renderBackground();
+    setTimeout(function(){paper.project.clear();renderBackground();socket.emit('newround',who);},2000); //reinit canvas & game
   });
 
   socket.on('left',function(user)

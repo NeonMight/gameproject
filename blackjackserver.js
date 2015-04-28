@@ -54,8 +54,8 @@ function bust(array) //check if array is over 21
 }
 
 var rooms = ['Lobby'];
-var decks = [];
-var usernames = {};
+var decks = []; //all decks for all rooms
+var usernames = {}; //basically useless lol
 var dealerCards = [];
 var userCards = {};
 var winningUser = [];  // current winning user for each room
@@ -64,7 +64,7 @@ var inRoom = [];
 var roomCount = 0;
 var roomPopulation = [];
 var userOffset = {}; //set to their initial connection order
-var capacity = 2;
+var capacity = 2; //max num of players allowed in rooms
 for (var i = 0; i < 50; i++) //imposes a limit for number of players
 {
   winningHand.push(0);
@@ -158,6 +158,7 @@ io.sockets.on('connection', function(socket)
 
   socket.on('hitme',function(usr)
   {
+    console.log('Hitme triggered by '+usr);
     //if hand is greater than 21, then bust and send bust, then emit turn next user in room
     var newcard = decks[socket.room].pop();
     userCards[usr].push(newcard);
@@ -182,6 +183,7 @@ io.sockets.on('connection', function(socket)
 
   socket.on('pass',function(usr)
   {
+    console.log('pass by '+usr);
     //compare player's total to the current winning hand
     var total = bust(userCards[usr]);
     if (total > winningHand[socket.room])
@@ -207,7 +209,48 @@ io.sockets.on('connection', function(socket)
       winningUser[socket.room] = 'dealer';
     }
     socket.emit('winner',winningUser[socket.room]);
-    console.log('Round over.');
+    //console.log('Round over.');
+  });
+
+  socket.on('newround',function(who) //handle all rounds after the first
+  {
+    //THIS FUNCTION IS GETTING CALLED TWICE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+    //reset deck, usercards, turn, winning hand, winning user...
+    decks[socket.room] = createDeck(); //reinitialize deck
+    winningUser[socket.room] = 'dealer';
+    winningHand[socket.room] = 0; //reset stored winner
+    var totheback = inRoom[socket.room].shift();
+    inRoom[socket.room].push(totheback); //reset user (dealer) to the back
+    //redeal dealer's cards
+    dealerCards[socket.room] = [];
+    dealerCards[socket.room].push(decks[socket.room].pop());
+    dealerCards[socket.room].push(decks[socket.room].pop());
+    for (var i = 0; i < inRoom[socket.room].length; i++)
+    {
+      var name = inRoom[socket.room][i];
+      userCards[name] = []; //reinitialize each user's hand
+      userCards[name].push(decks[socket.room].pop());
+      userCards[name].push(decks[socket.room].pop());
+    }
+    var offset = 0;
+    var position = 100;
+    io.sockets.in('room'+socket.room).emit('dealer',{x:350+offset, y:125, val:dealerCards[socket.room][0]});
+    io.sockets.in('room'+socket.room).emit('dealer',{x:350+50, y:125, val:dealerCards[socket.room][1]});
+
+    for (var i = 0; i < inRoom[socket.room].length-1; i++) //for each user minus the server
+    {
+      var name = inRoom[socket.room][i] // use i to index into players array
+      for (var j = 0; j < userCards[name].length; j++) //for each card
+      {
+        io.sockets.in('room'+socket.room).emit('card', {x:position+offset/*player offset + card offset*/, y:400, val:userCards[name][j], user:name}); // send each card for this user
+        offset += 50; //increment CARD offset for this player
+      }
+      io.sockets.in('room'+socket.room).emit('nametag',{x:position, y:320, user:name});
+      position += 225;
+      offset = 0;
+    }
+    io.sockets.in('room'+socket.room).emit('turn',inRoom[socket.room][0]);
   });
 
   socket.on('disconnect',function()
