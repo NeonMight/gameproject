@@ -65,6 +65,7 @@ var roomCount = 0;
 var roomPopulation = [];
 var userOffset = {}; //set to their initial connection order
 var capacity = 2; //max num of players allowed in rooms
+/////////INITIALIZATION LOOP
 for (var i = 0; i < 50; i++) //imposes a limit for number of players
 {
   winningHand.push(0);
@@ -72,7 +73,7 @@ for (var i = 0; i < 50; i++) //imposes a limit for number of players
   decks.push(createDeck());
   dealerCards.push([]);
   inRoom.push([]);
-  winningUser.push('dealer');
+  winningUser.push('lkasjdflaksjdf');
 }
 var express = require('express');
 var app = express();
@@ -212,45 +213,49 @@ io.sockets.on('connection', function(socket)
     //console.log('Round over.');
   });
 
-  socket.on('newround',function(who) //handle all rounds after the first
+  socket.on('newround',function(winner) //handle all rounds after the first
   {
     //THIS FUNCTION IS GETTING CALLED TWICE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-    //reset deck, usercards, turn, winning hand, winning user...
-    decks[socket.room] = createDeck(); //reinitialize deck
-    winningUser[socket.room] = 'dealer';
-    winningHand[socket.room] = 0; //reset stored winner
-    var totheback = inRoom[socket.room].shift();
-    inRoom[socket.room].push(totheback); //reset user (dealer) to the back
-    //redeal dealer's cards
-    dealerCards[socket.room] = [];
-    dealerCards[socket.room].push(decks[socket.room].pop());
-    dealerCards[socket.room].push(decks[socket.room].pop());
-    for (var i = 0; i < inRoom[socket.room].length; i++)
+    console.log('newround function has been called with '+winner+' in '+socket.room);
+    if(winner == winningUser[socket.room])
     {
-      var name = inRoom[socket.room][i];
-      userCards[name] = []; //reinitialize each user's hand
-      userCards[name].push(decks[socket.room].pop());
-      userCards[name].push(decks[socket.room].pop());
-    }
-    var offset = 0;
-    var position = 100;
-    io.sockets.in('room'+socket.room).emit('dealer',{x:350+offset, y:125, val:dealerCards[socket.room][0]});
-    io.sockets.in('room'+socket.room).emit('dealer',{x:350+50, y:125, val:dealerCards[socket.room][1]});
-
-    for (var i = 0; i < inRoom[socket.room].length-1; i++) //for each user minus the server
-    {
-      var name = inRoom[socket.room][i] // use i to index into players array
-      for (var j = 0; j < userCards[name].length; j++) //for each card
+      console.log('Reinitializing: '+winner+' = '+winningUser[socket.room]);
+      //reset deck, usercards, turn, winning hand, winning user...
+      decks[socket.room] = createDeck(); //reinitialize deck
+      winningUser[socket.room] = 'kljalksdgjasdlgkfasd';
+      winningHand[socket.room] = 0; //reset stored winner
+      var totheback = inRoom[socket.room].shift();
+      inRoom[socket.room].push(totheback); //reset user (dealer) to the back
+      //redeal dealer's cards
+      dealerCards[socket.room] = [];
+      dealerCards[socket.room].push(decks[socket.room].pop());
+      dealerCards[socket.room].push(decks[socket.room].pop());
+      for (var i = 0; i < inRoom[socket.room].length; i++)
       {
-        io.sockets.in('room'+socket.room).emit('card', {x:position+offset/*player offset + card offset*/, y:400, val:userCards[name][j], user:name}); // send each card for this user
-        offset += 50; //increment CARD offset for this player
+        var name = inRoom[socket.room][i];
+        userCards[name] = []; //reinitialize each user's hand
+        userCards[name].push(decks[socket.room].pop());
+        userCards[name].push(decks[socket.room].pop());
       }
-      io.sockets.in('room'+socket.room).emit('nametag',{x:position, y:320, user:name});
-      position += 225;
-      offset = 0;
+      var offset = 0;
+      var position = 100;
+      io.sockets.in('room'+socket.room).emit('dealer',{x:350+offset, y:125, val:dealerCards[socket.room][0]});
+      io.sockets.in('room'+socket.room).emit('dealer',{x:350+50, y:125, val:dealerCards[socket.room][1]});
+
+      for (var i = 0; i < inRoom[socket.room].length-1; i++) //for each user minus the server
+      {
+        var name = inRoom[socket.room][i] // use i to index into players array
+        for (var j = 0; j < userCards[name].length; j++) //for each card
+        {
+          io.sockets.in('room'+socket.room).emit('card', {x:position+offset/*player offset + card offset*/, y:400, val:userCards[name][j], user:name}); // send each card for this user
+          offset += 50; //increment CARD offset for this player
+        }
+        io.sockets.in('room'+socket.room).emit('nametag',{x:position, y:320, user:name});
+        position += 225;
+        offset = 0;
+      }
+      io.sockets.in('room'+socket.room).emit('turn',inRoom[socket.room][0]);
     }
-    io.sockets.in('room'+socket.room).emit('turn',inRoom[socket.room][0]);
   });
 
   socket.on('disconnect',function()

@@ -16,16 +16,19 @@ function setUpBlackJack(usr)
 {
   var canv = document.getElementById('can');
   paper.setup(canv);
-  renderBackground();
+  //renderBackground();
   document.getElementById('chat-status').innerHTML = "Connected";
-  chatbox = document.getElementById('chat-output');
+  var chatbox = document.getElementById('chat-output');
+  var chatfocus = false;
+  chatbox.onfocus = function() {chatfocus = true;}; //handle whether chat is active or not
+  chatbox.onblur = function() {chatfocus = false;};
   //you should be able to see both of your cards and one of dealer's
   var socket = io.connect('http://localhost:3002');
   //set up chat
   var input = document.getElementById('chat-input');
   input.onkeydown = function(ev)
   {
-    if (ev.keyCode == 13)
+    if (ev.keyCode == 13 && chatfocus == false)
     {
       socket.emit('message',{username:usr, message:input.value});
       input.value = '';
@@ -62,6 +65,7 @@ function setUpBlackJack(usr)
 
   socket.on('turn',function(who)
   {
+    //console.log('Turn signal received');
     alert(who+'\'s turn');
     if (usr == who)
     {
@@ -84,8 +88,10 @@ function setUpBlackJack(usr)
 
   socket.on('winner',function(who)
   {
-    alert(who+' wins!');
-    setTimeout(function(){paper.project.clear();renderBackground();socket.emit('newround',who);},2000); //reinit canvas & game
+    //console.log('win signal received');
+    //render winner text
+    paper.project.clear();/*renderBackground();*/
+    socket.emit('newround',who); //reinit canvas & game
   });
 
   socket.on('left',function(user)
