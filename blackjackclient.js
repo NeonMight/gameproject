@@ -100,7 +100,7 @@ function setUpBlackJack(usr)
   });
 }
 
-function renderCard(x,y,usr,val,s)
+function renderCard(x,y,usr,val,s) //first or not parameter too? attach socket handler for on roundover
 {
   var card = new paper.Raster();
   card.source = 'http://104.130.213.200/img/card'+val+'.png';
@@ -108,6 +108,7 @@ function renderCard(x,y,usr,val,s)
   card.position.y = y;
   card.data = usr;
   card.scale(0.21);
+  //for WC Edition/possibly standard, if owner and user !=, render a card1 on top of it so it is pre-rendered and remove those card1's on roundover
 }
 
 function renderNameplate(x,y,name)

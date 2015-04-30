@@ -64,7 +64,7 @@ var inRoom = [];
 var roomCount = 0;
 var roomPopulation = [];
 var userOffset = {}; //set to their initial connection order
-var capacity = 2; //max num of players allowed in rooms
+var capacity = 2; //max num of players allowed in rooms; rendering and game should scale up
 /////////INITIALIZATION LOOP
 for (var i = 0; i < 50; i++) //imposes a limit for number of players
 {
@@ -73,7 +73,7 @@ for (var i = 0; i < 50; i++) //imposes a limit for number of players
   decks.push(createDeck());
   dealerCards.push([]);
   inRoom.push([]);
-  winningUser.push('lkasjdflaksjdf');
+  winningUser.push('');
 }
 var express = require('express');
 var app = express();
@@ -204,25 +204,34 @@ io.sockets.on('connection', function(socket)
     //send init message again in this one and reset deck (decks[socket.room] = createDeck())
     //socket.send('winner',) //send whoever winner is and clear canvas
     //setTimeout(function(){},6000);  send re-initialized game state signal
-    var dealertotal = bust(dealerCards[socket.room]);
-    if (dealertotal >= winningHand[socket.room])
+    // Its computing this function TWICE as well!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    if (winningUser[socket.room] != 'a') //might run into bugs if all users bust
     {
-      winningUser[socket.room] = 'dealer';
+      var dealertotal = bust(dealerCards[socket.room]);
+      if (dealertotal >= winningHand[socket.room])
+      {
+        winningUser[socket.room] = 'dealer';
+      }
+      socket.emit('winner',winningUser[socket.room]);
+      console.log(winningUser[socket.room]+' wins!');
+      //console.log('Round over.');
+      winningUser[socket.room] = ''; //this reset should work?
+      //sockets.emit('chat',{username:"Server", message:winningUser[socket.room]+' wins!'});
     }
-    socket.emit('winner',winningUser[socket.room]);
-    //console.log('Round over.');
   });
 
   socket.on('newround',function(winner) //handle all rounds after the first
   {
     //THIS FUNCTION IS GETTING CALLED TWICE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     console.log('newround function has been called with '+winner+' in '+socket.room);
+    console.log('winning user for this room is '+winningUser[socket.room]);
     if(winner == winningUser[socket.room])
     {
       console.log('Reinitializing: '+winner+' = '+winningUser[socket.room]);
       //reset deck, usercards, turn, winning hand, winning user...
       decks[socket.room] = createDeck(); //reinitialize deck
-      winningUser[socket.room] = 'kljalksdgjasdlgkfasd';
+      winningUser[socket.room] = 'a';
+      console.log('winning user has been changed to '+winningUser[socket.room]);
       winningHand[socket.room] = 0; //reset stored winner
       var totheback = inRoom[socket.room].shift();
       inRoom[socket.room].push(totheback); //reset user (dealer) to the back
