@@ -213,10 +213,10 @@ io.sockets.on('connection', function(socket)
         winningUser[socket.room] = 'dealer';
       }
       socket.emit('winner',winningUser[socket.room]);
-      console.log(winningUser[socket.room]+' wins!');
+      io.sockets.in('room'+socket.room).emit('chat',{username:"Server", message:winningUser[socket.room]+' wins!'});
+      //console.log(winningUser[socket.room]+' wins!');
       //console.log('Round over.');
-      winningUser[socket.room] = ''; //this reset should work?
-      //sockets.emit('chat',{username:"Server", message:winningUser[socket.room]+' wins!'});
+      //winningUser[socket.room] = ''; //this reset should work?
     }
   });
 
@@ -264,6 +264,7 @@ io.sockets.on('connection', function(socket)
         offset = 0;
       }
       io.sockets.in('room'+socket.room).emit('turn',inRoom[socket.room][0]);
+      console.log(inRoom[socket.room][0]+'\'s turn');
     }
   });
 

@@ -90,7 +90,8 @@ function setUpBlackJack(usr)
   {
     //console.log('win signal received');
     //render winner text
-    paper.project.clear();/*renderBackground();*/
+    paper.project.clear();
+    //renderBackground();
     socket.emit('newround',who); //reinit canvas & game
   });
 
