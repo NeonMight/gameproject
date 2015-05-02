@@ -34,17 +34,6 @@ body {background-color:#999999;;
       background-size:100% auto;
       background-repeat: no-repeat;
 }
-/*
-
-bubble windows
-the layers are:
-- bubble-outer (jquery adds alot of stuff here)
-- bubble-inner (so that stretchHeight works)
-- bubble-pad
-  - optional to provide padding
-- bubble-main (the one that stretchHeight works on)
-
-*/
 
 /* chat box css and code taken from html5cards.com */
 .bubble-outer {

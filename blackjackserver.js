@@ -151,7 +151,7 @@ io.sockets.on('connection', function(socket)
       position += 225; //will this work???
       offset = 0;
     }
-    if (roomPopulation[socket.room] >= 2)
+    if (roomPopulation[socket.room] == capacity)
     {
       io.sockets.in('room'+socket.room).emit('turn', inRoom[socket.room][0]); //the first user in room
     }
@@ -212,7 +212,7 @@ io.sockets.on('connection', function(socket)
       {
         winningUser[socket.room] = 'dealer';
       }
-      socket.emit('winner',winningUser[socket.room]);
+      io.sockets.in('room'+socket.room).emit('winner',winningUser[socket.room]);
       io.sockets.in('room'+socket.room).emit('chat',{username:"Server", message:winningUser[socket.room]+' wins!'});
       //console.log(winningUser[socket.room]+' wins!');
       //console.log('Round over.');
