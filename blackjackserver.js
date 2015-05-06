@@ -208,6 +208,7 @@ io.sockets.on('connection', function(socket)
     // Its computing this function TWICE as well!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     if (winningUser[socket.room] != '') //might run into bugs if all users bust
     {
+      console.log('Round over');
       var dealertotal = bust(dealerCards[socket.room]);
       if (dealertotal >= winningHand[socket.room])
       {
@@ -276,7 +277,11 @@ io.sockets.on('connection', function(socket)
     //remove from inroom too
     for (var i = 0; i < inRoom[socket.room].length; i++)
     {
-      if (inRoom[socket.room][i] == socket.username) inRoom[socket.room].splice(i,1); //remove user from inRoom
+      if (inRoom[socket.room][i] == socket.username)
+        {
+          inRoom[socket.room].splice(i,1);
+          if(i == 0) io.sockets.in('room'+socket.room).emit('turn',inRoom[socket.room][0]); //if it was that user's turn, go to next user
+        }//remove user from inRoom
     }
     delete usernames[socket.username];
     socket.leave('room'+socket.room);
