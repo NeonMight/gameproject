@@ -2,6 +2,13 @@
 // turn will iterate through the available users and send back the next user
 // hitme will be a event listener on dblclick that will send the username to the server
 
+//jquery fadein from onextrapixel.com
+$(document).ready(function(){
+	//fade in from http://www.onextrapixel.com/2010/02/23/how-to-use-jquery-to-make-slick-page-transitions/
+	$("body").css("display", "none");
+	$("body").fadeIn(500);
+});
+
 function getXMLHttpObject()
 {
 	if (window.XMLHttpRequest)

@@ -64,7 +64,7 @@ var inRoom = [];
 var roomCount = 0;
 var roomPopulation = [];
 var userOffset = {}; //set to their initial connection order
-var capacity = 2; //max num of players allowed in rooms; rendering and game should scale up
+var capacity = 3; //max num of players allowed in rooms; rendering and game should scale up
 /////////INITIALIZATION LOOP
 for (var i = 0; i < 50; i++) //imposes a limit for number of players
 {
@@ -125,8 +125,8 @@ io.sockets.on('connection', function(socket)
 
   socket.on('init',function(usr) //sends card data to client to be rendered
   {
-    var offset = 0
-    var position = 100; // THIS is what you need to edit to figure out proper offset leves
+    var offset = 0;
+    var position = 50; // THIS is what you need to edit to figure out proper offset leves
 
     io.sockets.in('room'+socket.room).emit('dealer',{x:350+offset, y:125, val:dealerCards[socket.room][0], type:"hidden"}); //type='hidden'
     io.sockets.in('room'+socket.room).emit('dealer',{x:350+50, y:125, val:dealerCards[socket.room][1], type:"hidden"}); //type='visible'
@@ -151,7 +151,7 @@ io.sockets.on('connection', function(socket)
       }
       // NOW, increment the PLAYER offset here
       io.sockets.in('room'+socket.room).emit('nametag',{x:position, y:320, user:name});
-      position += 225; //will this work???
+      position += 200; //will this work???
       offset = 0;
     }
     if (roomPopulation[socket.room] == capacity)
@@ -248,7 +248,7 @@ io.sockets.on('connection', function(socket)
         userCards[name].push(decks[socket.room].pop());
       }
       var offset = 0;
-      var position = 100;
+      var position = 50;
       io.sockets.in('room'+socket.room).emit('dealer',{x:350+offset, y:125, val:dealerCards[socket.room][0], type: "hidden"});
       io.sockets.in('room'+socket.room).emit('dealer',{x:350+50, y:125, val:dealerCards[socket.room][1], type: "hidden"});
 
@@ -262,7 +262,7 @@ io.sockets.on('connection', function(socket)
           offset += 50; //increment CARD offset for this player
         }
         io.sockets.in('room'+socket.room).emit('nametag',{x:position, y:320, user:name});
-        position += 225;
+        position += 200;
         offset = 0;
       }
       io.sockets.in('room'+socket.room).emit('turn',inRoom[socket.room][0]);

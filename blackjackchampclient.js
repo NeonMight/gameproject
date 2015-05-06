@@ -2,10 +2,17 @@
 // turn will iterate through the available users and send back the next user
 // hitme will be a event listener on dblclick that will send the username to the server
 
+//jquery fadein from onextrapixel.com
+$(document).ready(function(){
+	//fade in from http://www.onextrapixel.com/2010/02/23/how-to-use-jquery-to-make-slick-page-transitions/
+	$("body").css("display", "none");
+	$("body").fadeIn(500);
+});
+
 function renderBackground()
 {
   var background = new paper.Raster();
-  background.source = 'https://mxg.cdnbf.net/mexchangeblackjack/turbo/assets/gameView/tableBackground.png?v1.26-210';
+  background.source = 'img/goldTable.png';
   //http://104.130.213.200/img/main-bg.jpg
   //http://web.stanford.edu/~jlewis8/cs148/pokerscene/textures/perlinfelt1.jpg
   background.scale(1);
@@ -110,7 +117,7 @@ function renderCard(x,y,u,val,soc,player,type) //renderCard(x,y,usr,val,soc,play
   card.position.x = x;
   card.position.y = y;
   card.data = u;
-  card.scale(0.21);
+  card.scale(0.18);
   //for WC Edition/possibly standard, if owner and user !=, render a card1 on top of it so it is pre-rendered and remove those card1's on roundover
   //also could have cover card animate on roundover instead of change source
   //if type =='hidden' and u == player {do some stuff here}
@@ -121,7 +128,7 @@ function renderCard(x,y,u,val,soc,player,type) //renderCard(x,y,usr,val,soc,play
     coverCard.source = 'http://104.130.213.200/img/card1.png';
     coverCard.position.x = x;
     coverCard.position.y = y;
-    coverCard.scale(0.21);
+    coverCard.scale(0.18);
     soc.on('winner',function()
     {
       coverCard.source = ''; //remove cover card
