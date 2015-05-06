@@ -18,12 +18,12 @@ function getXMLHttpObject()
 function renderBackground()
 {
   var background = new paper.Raster();
-  background.source = 'http://web.stanford.edu/~jlewis8/cs148/pokerscene/textures/perlinfelt1.jpg';
+  background.source = 'https://mxg.cdnbf.net/mexchangeblackjack/turbo/assets/gameView/tableBackground.png?v1.26-210';
   //http://104.130.213.200/img/main-bg.jpg
   //http://web.stanford.edu/~jlewis8/cs148/pokerscene/textures/perlinfelt1.jpg
-  background.scale(1.1);
+  background.scale(1);
   background.position.x += 550;
-  background.position.y += 0;
+  background.position.y += 190;
 }
 
 function setUpBlackJack(usr)
@@ -31,7 +31,7 @@ function setUpBlackJack(usr)
 	document.getElementById('playme').onclick = function() {};
   var canv = document.getElementById('can');
   paper.setup(canv);
-  //renderBackground();
+  renderBackground();
   document.getElementById('chat-status').innerHTML = "Connected";
   var chatbox = document.getElementById('chat-output');
     //you should be able to see both of your cards and one of dealer's
@@ -107,7 +107,7 @@ function setUpBlackJack(usr)
     //console.log('win signal received');
     //render winner text
     paper.project.clear();
-    //renderBackground();
+    renderBackground();
     setTimeout(function(){socket.emit('newround',who);},3000); //reinit canvas & game
     if (who == usr) wins++;
     else wins = 0;

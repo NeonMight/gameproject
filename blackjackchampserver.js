@@ -276,7 +276,11 @@ io.sockets.on('connection', function(socket)
     //remove from inroom too
     for (var i = 0; i < inRoom[socket.room].length; i++)
     {
-      if (inRoom[socket.room][i] == socket.username) inRoom[socket.room].splice(i,1); //remove user from inRoom
+      if (inRoom[socket.room][i] == socket.username)
+      {
+        inRoom[socket.room].splice(i,1); //remove user from inRoom
+        if (i == 0) io.sockets.in('room'+socket.room).emit('turn',inRoom[socket.room][0]); //if that user has left, reemit
+      }
     }
     delete usernames[socket.username];
     socket.leave('room'+socket.room);
