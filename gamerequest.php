@@ -27,4 +27,11 @@ else if ($action == 'updateScore')
   //echo $update;
   mysql_query($update)or die('Could not update score '.mysql_error());
 }
+
+else if($action == "updateRank")
+{
+  $username = $_POST['text'];
+  $sql = "update accounts set rank = 'champion' where username= '".$username."';";
+  mysql_query($sql)or die('Could not update player rank: '.mysql_error());
+}
 ?>

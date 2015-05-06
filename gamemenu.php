@@ -71,18 +71,23 @@ body {background-color:#999999;}
 <div class='col-xs-6'>
 <div class='panel panel-default' align='center'>
 <h4><a href='gamemain.php'>Play Irreconcilable Differences</a></h4>
-<h4>Screenshots coming soon</h4>
+<h4>Screenshot</h4>
 </div>
 
 <div class='panel panel-default' align='center'>
 <h4><a href='blackjack.php'>Play Blackjack: Standard Edition</a></h4>
-<h4>Screenshots coming soon</h4>
+<h4>Screenshot</h4>
 </div>
 
-<div class='panel panel-default' align='center'>
-<h4><a>Play Blackjack: World Championship Edition(Coming Soon!)</a></h4>
-<h4>Screenshots coming soon</h4>
-</div>
+<?php
+$sql = "select rank from accounts where username = '".$username."';";
+$results = mysql_query($sql)or die('Could not fetch data: '.mysql_error());
+while($row = mysql_fetch_assoc($results))
+{
+  $myRank = $row['rank'];
+}
+if ($myRank == "champion") include "celink.php";
+?>
 </div>
 
 </div>

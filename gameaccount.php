@@ -51,7 +51,7 @@ body {background-color:#999999;}
     </ul>
 
     <ul class="nav navbar-nav">
-      <li><a href="gamemain.php">Play Games</a></li>
+      <li><a href="gamemenu.php">Play Games</a></li>
     </ul>
 
     <ul class="nav navbar-nav">
@@ -65,12 +65,13 @@ body {background-color:#999999;}
 </nav>
 <div class='container'>
 <?php
-$sql = "select score from accounts where username = '".$username."';";
+$sql = "select score, rank from accounts where username = '".$username."';";
 $resultset = mysql_query($sql)or die('Could not fetch user data '.mysql_error());
 while ($row = mysql_fetch_assoc($resultset))
 {
   echo "<h2><b>".$username."</b></h2>";
-  echo "<h4>Your total score: <b>".$row['score']."</b></h4>";
+  echo "<h4>Your Irreconcilable differences score: <b>".$row['score']."</b></h4>";
+  echo "<h4>Your blackjack rank: <b>".$row['rank']."</b></h4>";
 }
 mysql_close($con);
 ?>
