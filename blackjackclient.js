@@ -1,6 +1,7 @@
 // turn event will pass a username, which will add a click event to the canvas if usernames match
 // turn will iterate through the available users and send back the next user
 // hitme will be a event listener on dblclick that will send the username to the server
+
 function renderBackground()
 {
   var background = new paper.Raster();
@@ -19,16 +20,16 @@ function setUpBlackJack(usr)
   //renderBackground();
   document.getElementById('chat-status').innerHTML = "Connected";
   var chatbox = document.getElementById('chat-output');
-  var chatfocus = false;
-  chatbox.onfocus = function() {chatfocus = true;}; //handle whether chat is active or not
-  chatbox.onblur = function() {chatfocus = false;};
-  //you should be able to see both of your cards and one of dealer's
+    //you should be able to see both of your cards and one of dealer's
   var socket = io.connect('http://localhost:3002');
   //set up chat
   var input = document.getElementById('chat-input');
+  var chatfocus = false;
+  input.onfocus = function(ev) {chatfocus = true;}; //handle whether chat is active or not
+  input.onblur = function(ev) {chatfocus = false;};
   input.onkeydown = function(ev)
   {
-    if (ev.keyCode == 13 && chatfocus == false)
+    if (ev.keyCode == 13 && chatfocus == true)
     {
       socket.emit('message',{username:usr, message:input.value});
       input.value = '';
@@ -73,7 +74,7 @@ function setUpBlackJack(usr)
       canv.ondblclick = function(){socket.emit('hitme',who)};
       document.onkeydown = function(event)
       {
-        if (event.keyCode == 32) socket.emit('pass',who);
+        if (event.keyCode == 32 && chatfocus == false) socket.emit('pass',who);
         //console.log('user pressed a key');
       };
     }
