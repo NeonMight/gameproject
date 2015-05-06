@@ -128,8 +128,8 @@ io.sockets.on('connection', function(socket)
     var offset = 0
     var position = 100; // THIS is what you need to edit to figure out proper offset leves
 
-    io.sockets.in('room'+socket.room).emit('dealer',{x:350+offset, y:125, val:dealerCards[socket.room][0]});
-    io.sockets.in('room'+socket.room).emit('dealer',{x:350+50, y:125, val:dealerCards[socket.room][1]});
+    io.sockets.in('room'+socket.room).emit('dealer',{x:350+offset, y:125, val:dealerCards[socket.room][0], type:"hidden"}); //type='hidden'
+    io.sockets.in('room'+socket.room).emit('dealer',{x:350+50, y:125, val:dealerCards[socket.room][1], type:"visible"}); //type='visible'
     userCards[usr] = [];
     userCards[usr].push(decks[socket.room].pop());
     userCards[usr].push(decks[socket.room].pop());  //deal first 2 cards for user
@@ -143,7 +143,10 @@ io.sockets.on('connection', function(socket)
       var name = inRoom[socket.room][i] // use i to index into players array
       for (var j = 0; j < userCards[name].length; j++) //for each card
       {
-        io.sockets.in('room'+socket.room).emit('card', {x:position+offset/*player offset + card offset*/, y:400, val:userCards[name][j], user:name}); // send each card for this user
+        //if i == 0, emit hidden. If not, emit not hidden!!!
+        //io.sockets.in('room'+socket.room).emit('card',{x:position+offset, y:400, val:userCards[name][j], user:name, type='hidden'});
+        if (j==0) {io.sockets.in('room'+socket.room).emit('card', {x:position+offset/*player offset + card offset*/, y:400, val:userCards[name][j], user:name, type: "hidden"});}
+        else io.sockets.in('room'+socket.room).emit('card', {x:position+offset/*player offset + card offset*/, y:400, val:userCards[name][j], user:name, type: "visible"});
         offset += 50; //increment CARD offset for this player
       }
       // NOW, increment the PLAYER offset here
@@ -205,7 +208,7 @@ io.sockets.on('connection', function(socket)
     //socket.send('winner',) //send whoever winner is and clear canvas
     //setTimeout(function(){},6000);  send re-initialized game state signal
     // Its computing this function TWICE as well!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    if (winningUser[socket.room] != 'a') //might run into bugs if all users bust
+    if (winningUser[socket.room] != '') //might run into bugs if all users bust
     {
       var dealertotal = bust(dealerCards[socket.room]);
       if (dealertotal >= winningHand[socket.room])
@@ -230,7 +233,7 @@ io.sockets.on('connection', function(socket)
       console.log('Reinitializing: '+winner+' = '+winningUser[socket.room]);
       //reset deck, usercards, turn, winning hand, winning user...
       decks[socket.room] = createDeck(); //reinitialize deck
-      winningUser[socket.room] = 'a';
+      winningUser[socket.room] = '';
       console.log('winning user has been changed to '+winningUser[socket.room]);
       winningHand[socket.room] = 0; //reset stored winner
       var totheback = inRoom[socket.room].shift();
@@ -248,15 +251,16 @@ io.sockets.on('connection', function(socket)
       }
       var offset = 0;
       var position = 100;
-      io.sockets.in('room'+socket.room).emit('dealer',{x:350+offset, y:125, val:dealerCards[socket.room][0]});
-      io.sockets.in('room'+socket.room).emit('dealer',{x:350+50, y:125, val:dealerCards[socket.room][1]});
+      io.sockets.in('room'+socket.room).emit('dealer',{x:350+offset, y:125, val:dealerCards[socket.room][0], type: "hidden"});
+      io.sockets.in('room'+socket.room).emit('dealer',{x:350+50, y:125, val:dealerCards[socket.room][1], type: "visible"});
 
       for (var i = 0; i < inRoom[socket.room].length-1; i++) //for each user minus the server
       {
         var name = inRoom[socket.room][i] // use i to index into players array
         for (var j = 0; j < userCards[name].length; j++) //for each card
         {
-          io.sockets.in('room'+socket.room).emit('card', {x:position+offset/*player offset + card offset*/, y:400, val:userCards[name][j], user:name}); // send each card for this user
+          if (j == 0) io.sockets.in('room'+socket.room).emit('card', {x:position+offset/*player offset + card offset*/, y:400, val:userCards[name][j], user:name, type: "hidden"});
+          else io.sockets.in('room'+socket.room).emit('card', {x:position+offset/*player offset + card offset*/, y:400, val:userCards[name][j], user:name, type: "visible"});
           offset += 50; //increment CARD offset for this player
         }
         io.sockets.in('room'+socket.room).emit('nametag',{x:position, y:320, user:name});

@@ -51,11 +51,11 @@ function setUpBlackJack(usr)
   socket.on("bust",function(usr){alert(usr+ " busted!");}); //handle if user > 21
   socket.on('dealer',function(data)
   {
-    renderCard(data.x,data.y,'dealer',data.val); //user will have different x position depending on their seat in the room
+    renderCard(data.x,data.y,'dealer',data.val,socket,usr,data.type); //pass data.type
   });
   socket.on('card',function(data)
   {
-    renderCard(data.x,data.y,data.user,data.val,socket);
+    renderCard(data.x,data.y,data.user,data.val,socket,usr,data.type); //now pass usr into function and compare to data.user
   });
 
   socket.on('nametag',function(data)
@@ -101,16 +101,26 @@ function setUpBlackJack(usr)
   });
 }
 
-function renderCard(x,y,usr,val,s) //first or not parameter too? attach socket handler for on roundover
+function renderCard(x,y,u,val,soc,player,type) //renderCard(x,y,usr,val,soc,player,type)
 {
   var card = new paper.Raster();
   card.source = 'http://104.130.213.200/img/card'+val+'.png';
   card.position.x = x;
   card.position.y = y;
-  card.data = usr;
+  card.data = u;
   card.scale(0.21);
   //for WC Edition/possibly standard, if owner and user !=, render a card1 on top of it so it is pre-rendered and remove those card1's on roundover
   //also could have cover card animate on roundover instead of change source
+  //if type =='hidden' and u == player {do some stuff here}
+  if (card.data != player && type == "hidden")
+  {
+    //do the things! hide the cards!
+    var coverCard = new paper.Raster();
+    coverCard.source = 'http://104.130.213.200/img/card1.png';
+    coverCard.position.x = x;
+    coverCard.position.y = y;
+    coverCard.scale(0.21);
+  }
 }
 
 function renderNameplate(x,y,name)
