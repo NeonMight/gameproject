@@ -2,6 +2,19 @@
 // turn will iterate through the available users and send back the next user
 // hitme will be a event listener on dblclick that will send the username to the server
 
+function getXMLHttpObject()
+{
+	if (window.XMLHttpRequest)
+	{
+		xmlHttp = new XMLHttpRequest(); //good browsers
+	}
+	else
+	{
+		xmlHttp = new ActiveXObject("Microsoft.XMLHTTP"); // IE
+	}
+	return xmlHttp;
+}
+
 function renderBackground()
 {
   var background = new paper.Raster();
@@ -35,6 +48,7 @@ function setUpBlackJack(usr)
       input.value = '';
     }
   }
+  var wins = 0;
   //end chat setup
   socket.on('connect',function() {
     socket.emit('adduser',usr);
@@ -94,6 +108,18 @@ function setUpBlackJack(usr)
     paper.project.clear();
     //renderBackground();
     setTimeout(function(){socket.emit('newround',who);},3000); //reinit canvas & game
+    if (who == usr) wins++;
+    else wins = 0;
+    if (wins == 2)
+    {
+      var request = getXMLHttpObject();
+      var action = 'updateRank';
+      var params = 'action='+action+'&text='+usr+'&sid='+Math.random();
+      request.open('post','gamerequest.php',true);
+      request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      request.send(params);
+      request.onreadystatechange = function() {};
+    }
   });
 
   socket.on('left',function(user)
