@@ -162,7 +162,7 @@ io.sockets.on('connection', function(socket)
 
   socket.on('hitme',function(usr)
   {
-    console.log('Hitme triggered by '+usr);
+    //console.log('Hitme triggered by '+usr);
     //if hand is greater than 21, then bust and send bust, then emit turn next user in room
     var newcard = decks[socket.room].pop();
     userCards[usr].push(newcard);
@@ -171,9 +171,6 @@ io.sockets.on('connection', function(socket)
     //send render data
     var pos = 175 + (200*userOffset[usr]);
     io.sockets.in('room'+socket.room).emit('card',{x:pos, y:380-(Math.random()*25), val:newcard, user:usr});
-
-
-    console.log('Rendered');
 
     var total = bust(userCards[usr]);
     if (total == -1)
@@ -187,7 +184,7 @@ io.sockets.on('connection', function(socket)
 
   socket.on('pass',function(usr)
   {
-    console.log('pass by '+usr);
+    //console.log('pass by '+usr);
     //compare player's total to the current winning hand
     var total = bust(userCards[usr]);
     if (total > winningHand[socket.room])
@@ -200,6 +197,7 @@ io.sockets.on('connection', function(socket)
     inRoom[socket.room].push(totheback);
     // if hand is greater than highest value, then set highest value and winning username for room
     io.sockets.in('room'+socket.room).emit('turn',inRoom[socket.room][0]); //next user
+    console.log(inRoom[socket.room][0]+'s turn');
   });
 
   socket.on('roundover',function()
@@ -227,14 +225,14 @@ io.sockets.on('connection', function(socket)
   {
     //THIS FUNCTION IS GETTING CALLED TWICE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     console.log('newround function has been called with '+winner+' in '+socket.room);
-    console.log('winning user for this room is '+winningUser[socket.room]);
+    //console.log('winning user for this room is '+winningUser[socket.room]);
     if(winner == winningUser[socket.room])
     {
       console.log('Reinitializing: '+winner+' = '+winningUser[socket.room]);
       //reset deck, usercards, turn, winning hand, winning user...
       decks[socket.room] = createDeck(); //reinitialize deck
       winningUser[socket.room] = '';
-      console.log('winning user has been changed to '+winningUser[socket.room]);
+      //console.log('winning user has been changed to '+winningUser[socket.room]);
       winningHand[socket.room] = 0; //reset stored winner
       var totheback = inRoom[socket.room].shift();
       inRoom[socket.room].push(totheback); //reset user (dealer) to the back
@@ -288,5 +286,5 @@ io.sockets.on('connection', function(socket)
 );
 
 http.listen(3002, function() {
-          console.log('listening on *:3002');
+          console.log('Blackjack Standard node now listening on port 3002');
 });

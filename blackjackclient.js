@@ -88,11 +88,11 @@ function setUpBlackJack(usr)
 
   socket.on('winner',function(who)
   {
-    console.log('win signal received');
+    //console.log('win signal received');
     //render winner text
     paper.project.clear();
     //renderBackground();
-    socket.emit('newround',who); //reinit canvas & game
+    setTimeout(function(){socket.emit('newround',who);},3000); //reinit canvas & game
   });
 
   socket.on('left',function(user)
@@ -120,6 +120,10 @@ function renderCard(x,y,u,val,soc,player,type) //renderCard(x,y,usr,val,soc,play
     coverCard.position.x = x;
     coverCard.position.y = y;
     coverCard.scale(0.21);
+    soc.on('winner',function()
+    {
+      coverCard.source = ''; //remove cover card
+    })
   }
 }
 
