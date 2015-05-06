@@ -71,12 +71,14 @@ body {background-color:#999999;}
 <div class='col-xs-6'>
 <div class='panel panel-default' align='center'>
 <h4><a href='gamemain.php'>Play Irreconcilable Differences</a></h4>
-<h4>Screenshot</h4>
+<img src='img/idifferencesscreenshot.png' width='330' height='230'>
+<h4>Level: Beginner</h4>
 </div>
 
 <div class='panel panel-default' align='center'>
 <h4><a href='blackjack.php'>Play Blackjack: Standard Edition</a></h4>
-<h4>Screenshot</h4>
+<img src='img/bjstandardscreenshot.png' width='330' height='230'>
+<h4>Level: Intermediate</h4>
 </div>
 
 <?php
