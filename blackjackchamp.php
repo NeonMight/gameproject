@@ -170,7 +170,7 @@ body {background-color:#999999;;
 <div class='col-xs-8'>
 <h2><b>Blackjack: World Championship Edition</b></h2>
 <canvas id='can' width='850', height='500'>You are using a prehistoric browser</canvas>
-<?php echo "<button class='btn btn-default btn-block' onclick='setUpBlackJack(\"$username\")'>Play</button>"?>
+<?php echo "<button id='playme' class='btn btn-default btn-block' onclick='setUpBlackJack(\"$username\")'>Play</button>"?>
 </div>
 </div>
 </body>

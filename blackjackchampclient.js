@@ -15,6 +15,7 @@ function renderBackground()
 
 function setUpBlackJack(usr)
 {
+  document.getElementById('playme').onclick = "";
   var canv = document.getElementById('can');
   paper.setup(canv);
   //renderBackground();
