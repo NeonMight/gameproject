@@ -37,32 +37,9 @@ body {background-color:#999999;}
 </style>
 </head>
 <body>
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="gamemain.php">
-        <img id="SGicon" alt="ASGG" src="http://104.130.213.200/img/icon.png">
-      </a>
-      <a class="navbar-brand" href="#">Awkward Seagull Games</a>
-    </div>
-    <?php //echo "<form method='post' action='gameaccount.php' id='viewaccount' name='viewaccount'><input type='hidden' value='".$username."' name = 'user'></form>"?>
-    <ul class="nav navbar-nav">
-      <li><a href="gameaccount.php"><?php echo "Welcome ".$username; ?></a></li>
-    </ul>
-
-    <ul class="nav navbar-nav">
-      <li><a href="gamemenu.php">Play Games</a></li>
-    </ul>
-
-    <ul class="nav navbar-nav">
-      <li><a href="blackjack.php">Play Blackjack</a></li>
-    </ul>
-
-    <ul class="nav navbar-nav navbar-right">
-      <li><a href="gamelogout.php">Logout</a></li>
-    </ul>
-  </div>
-</nav>
+<?php
+include "navbar.php";
+?>
 <div class='container'>
 <?php
 $sql = "select score, rank from accounts where username = '".$username."';";
@@ -72,6 +49,7 @@ while ($row = mysql_fetch_assoc($resultset))
   echo "<h2><b>".$username."</b></h2>";
   echo "<h4>Your Irreconcilable differences score: <b>".$row['score']."</b></h4>";
   echo "<h4>Your blackjack rank: <b>".$row['rank']."</b></h4>";
+  if ($row['rank'] < 1) echo "<p>Win 2 in a row to increase rank!</p>";
 }
 mysql_close($con);
 ?>

@@ -115,7 +115,7 @@ function setUpBlackJack(usr)
     //render winner text
     paper.project.clear();
     renderBackground();
-    setTimeout(function(){socket.emit('newround',who);},3000); //reinit canvas & game
+    setTimeout(function(){socket.emit('newround',who);},3000*Math.random()); //reinit canvas & game
     if (who == usr) wins++;
     else wins = 0;
     if (wins == 2)

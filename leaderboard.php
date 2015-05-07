@@ -10,7 +10,7 @@ $username = $_SESSION['username'];
 ?>
 <html>
 <head>
-<title>Awkward Seagull Games: Games Menu</title>
+<title><?php echo $username.": Account data" ?></title>
 <!--bootstrap minified css-->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <style>
@@ -26,7 +26,6 @@ canvas {background-color: black;}
 <style>
 h1  {color:white; text-shadow: 0px 1px 4px black;}
 h2	{color:white; text-shadow: 0px 2px 4px black;}
-h6 {color:black;}
 #SGicon {
     margin:0;
     padding:0;
@@ -35,7 +34,6 @@ h6 {color:black;}
     height:auto;
   }
 body {background-color:#999999;}
-.panel {background-color:#777777;}
 </style>
 </head>
 <body>
@@ -43,32 +41,19 @@ body {background-color:#999999;}
 include "navbar.php";
 ?>
 <div class='container'>
-<div class='col-xs-3'>
-</div>
-<div class='col-xs-6'>
-<div class='panel panel-default' align='center'>
-<h4><a href='gamemain.php'>Play Irreconcilable Differences</a></h4>
-<img src='img/idifferencesscreenshot.png' width='330' height='230'>
-<h4>Level: Beginner</h4>
-</div>
-
-<div class='panel panel-default' align='center'>
-<h4><a href='blackjack.php'>Play Blackjack: Standard Edition</a></h4>
-<img src='img/bjstandardscreenshot.png' width='330' height='230'>
-<h4>Level: Intermediate</h4>
-</div>
-
+<h2><b>Blackjack Leaderboard</b></h2>
 <?php
-$sql = "select rank from accounts where username = '".$username."';";
-$results = mysql_query($sql)or die('Could not fetch data: '.mysql_error());
-while($row = mysql_fetch_assoc($results))
+$sql = "select * from accounts order by score desc limit 30";
+$resultset = mysql_query($sql)or die('Could not fetch user data '.mysql_error());
+$rank = 1;
+while ($row = mysql_fetch_assoc($resultset))
 {
-  $myRank = $row['rank'];
+  echo "<h2><b>".$rank."- ".$row['username']."</b></h2>";
+  echo "<h4>Your blackjack rank: <b>".$row['rank']."</b></h4>";
+  $rank++;
 }
-if ($myRank >= 1) include "celink.php";
+mysql_close($con);
 ?>
-</div>
-
 </div>
 </body>
 </html>

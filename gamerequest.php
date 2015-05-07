@@ -31,7 +31,14 @@ else if ($action == 'updateScore')
 else if($action == "updateRank")
 {
   $username = $_POST['text'];
-  $sql = "update accounts set rank = 'champion' where username= '".$username."';";
+  $sql = "select rank from accounts where username= '".$username."';";
+  $result = mysql_query($sql)or die('Could not get player rank');
+  while ($row = mysql_fetch_assoc($result))
+  {
+    $newrank = $row['rank'];
+  }
+  $newrank += 1;
+  $sql = "update accounts set rank = ".$newrank." where username= '".$username."';";
   mysql_query($sql)or die('Could not update player rank: '.mysql_error());
 }
 ?>
