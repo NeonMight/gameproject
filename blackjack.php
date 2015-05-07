@@ -42,6 +42,7 @@ body {background-color:#999999;;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
 	border-radius: 3px;
+  overflow: auto;
 }
 .bubble-title-bar {
 	width: 100%;
